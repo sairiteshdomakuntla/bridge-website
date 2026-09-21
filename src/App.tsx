@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { SITE } from './config';
+import { SITE, shortHash } from './config';
 import Privacy from './Privacy';
 
 /* ---------------- hooks ---------------- */
@@ -679,8 +679,8 @@ socket.emit('bridge-message', base64([
                 <li>Clipboard history, notifications + reply</li>
                 <li>Remote input receiver, camera viewer</li>
               </ul>
-              <a className="btn btn-specular" href={SITE.windowsDownloadUrl} style={{ width: '100%', justifyContent: 'center' }}>Download .exe</a>
-              <div className="mono" style={{ fontSize: 11.5, color: '#6b6b76', marginTop: 12, textAlign: 'center' }}>SHA-256 published with each release</div>
+              <a className="btn btn-specular" href={SITE.windowsDownloadUrl} download={SITE.windowsInstaller} style={{ width: '100%', justifyContent: 'center' }}>Download .exe · {SITE.windowsSize}</a>
+              <div className="mono" style={{ fontSize: 11.5, color: '#6b6b76', marginTop: 12, textAlign: 'center' }} title={SITE.windowsSha256}>SHA-256: {shortHash(SITE.windowsSha256)}</div>
             </div>
             <div className="dl-card reveal">
               <div className="os"><div className="glyph droid"><AndroidGlyph size={24} /></div><div><h3>Bridge for Android</h3><div className="file mono">{SITE.androidApk} · Android 8.0+ · v{SITE.appVersion} ({SITE.androidVersionCode})</div></div></div>
@@ -689,15 +689,16 @@ socket.emit('bridge-message', base64([
                 <li>Share-sheet → send any file to PC</li>
                 <li>Trackpad, camera, ring-my-phone</li>
               </ul>
-              <a className="btn btn-ghost" href={SITE.playStoreUrl} style={{ width: '100%', justifyContent: 'center' }}>Get it on Google Play</a>
+              <a className="btn btn-ghost" href={SITE.androidDownloadUrl} download={SITE.androidApk} style={{ width: '100%', justifyContent: 'center' }}>Download .apk · {SITE.androidSize}</a>
+              <div className="mono" style={{ fontSize: 11.5, color: '#6b6b76', marginTop: 12, textAlign: 'center' }} title={SITE.androidSha256}>SHA-256: {shortHash(SITE.androidSha256)}</div>
             </div>
           </div>
           <div className="dl-note reveal">
             <b>First-run notes (read once, smooth forever):</b>
             <ol>
-              <li><b>Windows SmartScreen</b> may flag the installer since it’s newly published and unsigned — click “More info → Run anyway”. Verifying the file name above is the check.</li>
+              <li><b>Windows SmartScreen</b> may flag the installer since it’s newly published and unsigned — click “More info → Run anyway”. Cautious? Match the SHA-256 fingerprint above after downloading.</li>
               <li><b>Windows Firewall</b> will ask about private-network access on first launch — allow it, or your phone can’t reach the PC.</li>
-              <li><b>Android sideload</b> (if installing the APK directly): allow “install unknown apps” for your browser once, then install. The Play listing removes this step.</li>
+              <li><b>Android sideload:</b> allow “install unknown apps” for your browser once, then install. The Play Store listing (coming soon) removes this step.</li>
               <li><b>Pairing:</b> open the Windows agent → scan its QR with Bridge on your phone → grant notification access only if you want message mirroring.</li>
             </ol>
           </div>
@@ -813,7 +814,7 @@ socket.emit('bridge-message', base64([
             <div className="foot-col">
               <h4>Get</h4>
               <a href={SITE.windowsDownloadUrl}>Windows agent</a>
-              <a href={SITE.playStoreUrl}>Android app</a>
+              <a href={SITE.androidDownloadUrl}>Android app</a>
               <a href="/download">Releases</a>
               <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
             </div>
