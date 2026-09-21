@@ -99,13 +99,6 @@ const PERMS: Perm[] = [
     ifDenied: 'Camera screen shows an explanatory empty state. Clipboard, files, notifications and remote keep working.',
   },
   {
-    perm: 'READ_MEDIA_IMAGES (+ READ_EXTERNAL_STORAGE on Android ≤ 12)',
-    platform: 'android',
-    why: 'Screenshots never touch your clipboard, so Bridge reads your latest screenshot from the MediaStore when you hit Sync — then streams it to your PC as a clipboard image you can paste anywhere.',
-    when: 'Only the first time a screenshot sync runs. Bridge reads the single latest screenshot, never a gallery sweep.',
-    ifDenied: 'Text clipboard still syncs. Screenshot-to-PC is skipped with a note explaining why.',
-  },
-  {
     perm: 'android.permission.POST_NOTIFICATIONS',
     platform: 'android',
     why: 'The persistent Bridge notification hosts the “Sync Now” action — the one-tap path that syncs your clipboard under Android’s foreground-window rules — plus connection status and the find-my-phone ringing controls.',
@@ -147,7 +140,7 @@ const FAQS = [
   },
   {
     q: 'Phone Link / KDE Connect already exist. Why Bridge?',
-    a: 'Phone Link needs a Microsoft account and routes through the cloud; KDE Connect is excellent but broad and fiddly for some Windows setups. Bridge is narrower and opinionated: Android + Windows, LAN-only, QR pairing in seconds, clipboard (text + images + screenshots), notification reply, phone-as-trackpad/keyboard/media-remote, and phone-as-camera — with every permission justified on this page.',
+    a: 'Phone Link needs a Microsoft account and routes through the cloud; KDE Connect is excellent but broad and fiddly for some Windows setups. Bridge is narrower and opinionated: Android + Windows, LAN-only, QR pairing in seconds, clipboard (text + images), file transfer via Share Sheet, notification reply, phone-as-trackpad/keyboard/media-remote, and phone-as-camera — with every permission justified on this page.',
   },
   {
     q: 'What do I need to run it?',
@@ -281,7 +274,7 @@ function Home({ section }: { section?: string }) {
                 {word}
               </span>
             </span>{' '}
-            on your phone, land on your PC. Clipboard, screenshots, files, texts, even your
+            on your phone, land on your PC. Clipboard, files, notifications, texts, even your
             phone-as-trackpad — <strong>over your own Wi-Fi, encrypted, with no account and no cloud.</strong>
           </p>
           <div className="hero-ctas">
@@ -321,7 +314,7 @@ function Home({ section }: { section?: string }) {
                     <div className="avatar">A</div>
                     <div style={{ flex: 1 }}>
                       <b>WhatsApp · Alice</b>
-                      <small>“Send me the screenshot when the build passes?”</small>
+                      <small>“Send me the files when the build passes?”</small>
                       <div className="reply">
                         <input defaultValue="On it — pushing now" readOnly />
                         <button>Reply</button>
@@ -329,8 +322,8 @@ function Home({ section }: { section?: string }) {
                     </div>
                   </div>
                   <div className="clip-card">
-                    <div className="meta"><span className="src">screenshot → pc</span><span className="time">12s ago</span></div>
-                    <p>▦ Screenshot_2026-09-21.png · pasted as image</p>
+                    <div className="meta"><span className="src">share sheet → pc</span><span className="time">12s ago</span></div>
+                    <p>📁 design-specs.pdf · received via share sheet</p>
                   </div>
                 </div>
                 <div className="phone-col">
@@ -350,7 +343,7 @@ function Home({ section }: { section?: string }) {
               </div>
             </div>
             <div className="stage-caption">
-              <span><b>← phone</b> copy, screenshot, reply</span>
+              <span><b>← phone</b> copy, files, reply</span>
               <span><b>pc →</b> paste, type, present</span>
               <span><b>⇄</b> same Wi-Fi · nothing leaves the room</span>
             </div>
@@ -362,7 +355,7 @@ function Home({ section }: { section?: string }) {
             {[0, 1].map((k) => (
               <span key={k} style={{ display: 'contents' }}>
                 <span><b>universal clipboard</b> · text + images</span>
-                <span>screenshot → <b>paste on pc</b></span>
+                <span>file transfer → <b>share sheet to pc</b></span>
                 <span>reply to <b>texts from desktop</b></span>
                 <span>phone as <b>trackpad + keyboard</b></span>
                 <span>phone as <b>camera</b></span>
@@ -386,7 +379,7 @@ function Home({ section }: { section?: string }) {
             <div className="story-card reveal">
               <span className="tag">✕ the old way</span>
               <h3>Copy on phone. Email it to yourself. Open laptop. Download. Paste.</h3>
-              <p>OTPs expire. Screenshots pile up in chat apps. Replies wait until you find your phone under a pillow. Every hop is a cloud server reading over your shoulder.</p>
+              <p>OTPs expire. Files get stuck in email drafts. Replies wait until you find your phone under a pillow. Every hop is a cloud server reading over your shoulder.</p>
             </div>
             <div className="story-card after reveal">
               <span className="tag">✓ the Bridge way</span>
@@ -406,16 +399,16 @@ function Home({ section }: { section?: string }) {
             <p>Bridge isn’t a dashboard you manage. It’s plumbing — features that disappear into muscle memory within a day.</p>
           </div>
           <div className="bento">
-            <div className="bcard wide reveal">
+            <div className="bcard reveal">
               <div className="icon">📋</div>
               <h3>Universal clipboard — text & images</h3>
               <p>Copy text or an image on Android, paste it on Windows with <code>Ctrl+V</code>. History is kept on both sides, echo-proofed by an event-dedupe store so nothing pastes twice. Copy in any app → tap <code>Sync Now</code> → paste on PC.</p>
               <div className="foot"><b>→</b> one tap, thanks to Android 10+ focus rules (explained honestly below)</div>
             </div>
             <div className="bcard reveal">
-              <div className="icon">📸</div>
-              <h3>Screenshots land on your PC</h3>
-              <p>Screenshots never enter the clipboard, so Bridge watches the MediaStore for the newest shot and streams it as a paste-ready image.</p>
+              <div className="icon">📁</div>
+              <h3>File transfer & Share Sheet</h3>
+              <p>Send files, photos, videos, or documents directly to your PC. Tap Share in any Android app and choose Bridge, or pick and send files directly from the app dashboard.</p>
               <div className="foot"><b>→</b> 64 KB chunks + SHA-256 checks</div>
             </div>
             <div className="bcard reveal">
@@ -437,9 +430,9 @@ function Home({ section }: { section?: string }) {
               <div className="foot"><b>→</b> peer-to-peer, no relay server</div>
             </div>
             <div className="bcard reveal">
-              <div className="icon">📁</div>
-              <h3>Files, share-sheet & find-my-phone</h3>
-              <p>Share any file from any Android app straight to your PC. Plus live battery level on Windows and a “ring phone” button that sounds even on silent.</p>
+              <div className="icon">🔔</div>
+              <h3>Find My Phone & battery monitor</h3>
+              <p>Misplaced your phone under a cushion? Click “Ring phone” from your Windows dashboard to sound an alert even on silent, and monitor your live battery level.</p>
               <div className="foot"><b>→</b> rings ~15s at max volume</div>
             </div>
           </div>
@@ -656,7 +649,6 @@ socket.emit('bridge-message', base64([
                 <tr><td>Works fully offline (LAN-only, no cloud relay)</td><td className="bcol">Yes</td><td className="no">No — needs internet</td><td className="yes">Yes</td></tr>
                 <tr><td>Pairing effort</td><td className="bcol">10-second QR scan</td><td className="mid">Sign-in + codes + retries</td><td className="mid">Manual accept on both sides</td></tr>
                 <tr><td>Clipboard text + images, both directions</td><td className="bcol">Yes</td><td className="mid">Text only, Samsung-limited</td><td className="yes">Yes</td></tr>
-                <tr><td>Screenshot → paste on PC</td><td className="bcol">Yes — only Bridge</td><td className="no">—</td><td className="no">—</td></tr>
                 <tr><td>Notification reply from PC, any app</td><td className="bcol">Yes</td><td className="mid">Mostly Samsung devices</td><td className="mid">Partial</td></tr>
                 <tr><td>Trackpad + keyboard + media keys, one screen</td><td className="bcol">Yes</td><td className="no">—</td><td className="mid">Partial, via plugins</td></tr>
                 <tr><td>Phone as PC camera over LAN</td><td className="bcol">Yes, encrypted WebRTC</td><td className="no">—</td><td className="mid">Via plugins</td></tr>
@@ -725,7 +717,7 @@ socket.emit('bridge-message', base64([
               <ul>
                 <li>QR pairing + AES-256-GCM on every message</li>
                 <li>Clipboard text + image sync with history</li>
-                <li>Screenshot-to-PC, share-sheet file transfer</li>
+                <li>Instant share-sheet file transfer (files, photos, docs)</li>
                 <li>Notification mirror with reply + dismiss</li>
                 <li>Phone-as-trackpad, keyboard, media keys</li>
                 <li>Phone-as-camera (WebRTC) + ring + battery</li>
