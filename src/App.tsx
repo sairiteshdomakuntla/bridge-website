@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SITE } from './config';
+import Privacy from './Privacy';
 
 /* ---------------- hooks ---------------- */
 
@@ -40,6 +42,20 @@ function useReveal() {
 }
 
 const ROTATE_WORDS = ['copy', 'paste', 'reply', 'present', 'share'];
+
+/** Deep-link support: /features, /security … scroll to the matching section. */
+function useSectionScroll(section?: string) {
+  useEffect(() => {
+    if (!section) {
+      window.scrollTo(0, 0);
+      return;
+    }
+    const t = setTimeout(() => {
+      document.getElementById(section)?.scrollIntoView({ behavior: 'auto', block: 'start' });
+    }, 60);
+    return () => clearTimeout(t);
+  }, [section]);
+}
 
 function useRotator() {
   const [i, setI] = useState(0);
@@ -188,8 +204,9 @@ function Logo({ size = 26 }: { size?: number }) {
 
 /* ---------------- main ---------------- */
 
-export default function App() {
+function Home({ section }: { section?: string }) {
   useReveal();
+  useSectionScroll(section);
   const word = useRotator();
   const [menuOpen, setMenuOpen] = useState(false);
   const [tour, setTour] = useState(0);
@@ -214,19 +231,19 @@ export default function App() {
       {/* ---------- nav ---------- */}
       <div className="nav-shell">
         <nav className="nav">
-          <a className="nav-logo" href="#top">
+          <a className="nav-logo" href="/">
             <Logo />
             <span>Bridge</span>
           </a>
           <div className="nav-links">
-            <a href="#features">Features</a>
-            <a href="#tour">Tour</a>
-            <a href="#security">Security</a>
-            <a href="#permissions">Permissions</a>
-            <a href="#download">Download</a>
-            <a href="#faq">FAQ</a>
+            <a href="/features">Features</a>
+            <a href="/tour">Tour</a>
+            <a href="/security">Security</a>
+            <a href="/permissions">Permissions</a>
+            <a href="/download">Download</a>
+            <a href="/faq">FAQ</a>
           </div>
-          <a className="nav-cta" href="#download">Get Bridge</a>
+          <a className="nav-cta" href="/download">Get Bridge</a>
           <button className="nav-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
             {menuOpen ? '✕' : '☰'}
           </button>
@@ -234,12 +251,12 @@ export default function App() {
       </div>
       {menuOpen && (
         <div className="mobile-menu" onClick={() => setMenuOpen(false)}>
-          <a href="#features">Features</a>
-          <a href="#tour">Tour</a>
-          <a href="#security">Security</a>
-          <a href="#permissions">Permissions</a>
-          <a href="#download">Download</a>
-          <a href="#faq">FAQ</a>
+          <a href="/features">Features</a>
+          <a href="/tour">Tour</a>
+          <a href="/security">Security</a>
+          <a href="/permissions">Permissions</a>
+          <a href="/download">Download</a>
+          <a href="/faq">FAQ</a>
         </div>
       )}
 
@@ -268,10 +285,10 @@ export default function App() {
             phone-as-trackpad — <strong>over your own Wi-Fi, encrypted, with no account and no cloud.</strong>
           </p>
           <div className="hero-ctas">
-            <a className="btn btn-specular" href="#download">
+            <a className="btn btn-specular" href="/download">
               <span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows
             </a>
-            <a className="btn btn-ghost" href="#download">
+            <a className="btn btn-ghost" href="/download">
               <span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android
             </a>
           </div>
@@ -528,7 +545,7 @@ export default function App() {
             <p>No accounts, no cables, no router surgery. If both devices share a Wi-Fi network, you’re done.</p>
           </div>
           <div className="steps">
-            <div className="step reveal"><div className="num">1</div><h3>Install both halves</h3><p>Windows agent on your PC, Bridge app on your Android phone. Links in <a href="#download" style={{ color: '#c4d3ff' }}>Download</a> — one <code>.exe</code>, one <code>.apk</code> / Play listing.</p></div>
+            <div className="step reveal"><div className="num">1</div><h3>Install both halves</h3><p>Windows agent on your PC, Bridge app on your Android phone. Links in <a href="/download" style={{ color: '#c4d3ff' }}>Download</a> — one <code>.exe</code>, one <code>.apk</code> / Play listing.</p></div>
             <div className="step reveal"><div className="num">2</div><h3>Join the same Wi-Fi</h3><p>Phone and PC on the same local network. Bridge auto-selects the right LAN adapter and ignores virtual ones (VMs, VPNs, WSL).</p></div>
             <div className="step reveal"><div className="num">3</div><h3>Scan the QR on your PC</h3><p>The PC shows a QR encoding <code>ip + port + 256-bit key</code>. Scan it with Bridge. Handshake verifies, AES-GCM switches on, and you’re paired — keys stored in the OS keychain on both sides.</p></div>
           </div>
@@ -771,8 +788,8 @@ socket.emit('bridge-message', base64([
             <h2>Copy on your phone.<br />Paste on your PC.</h2>
             <p>Free during v1. No account. Your network, your data, your two minutes of setup.</p>
             <div className="hero-ctas" style={{ marginTop: 0 }}>
-              <a className="btn btn-specular" href="#download"><span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows</a>
-              <a className="btn btn-ghost" href="#download"><span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android</a>
+              <a className="btn btn-specular" href="/download"><span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows</a>
+              <a className="btn btn-ghost" href="/download"><span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android</a>
             </div>
           </div>
         </div>
@@ -783,37 +800,58 @@ socket.emit('bridge-message', base64([
         <div className="wrap">
           <div className="foot-grid">
             <div className="foot-brand">
-              <a className="nav-logo" href="#top" style={{ textDecoration: 'none' }}><Logo /><span>Bridge</span></a>
+              <a className="nav-logo" href="/" style={{ textDecoration: 'none' }}><Logo /><span>Bridge</span></a>
               <p>Local-first continuity for Android & Windows. Your LAN is the cloud.</p>
               <p className="mono" style={{ fontSize: 11.5 }}>v{SITE.appVersion} · AES-256-GCM · LAN-only</p>
             </div>
             <div className="foot-col">
               <h4>Product</h4>
-              <a href="#features">Features</a>
-              <a href="#tour">Tour</a>
-              <a href="#setup">Setup</a>
-              <a href="#updates">Changelog</a>
+              <a href="/features">Features</a>
+              <a href="/tour">Tour</a>
+              <a href="/setup">Setup</a>
+              <a href="/updates">Changelog</a>
             </div>
             <div className="foot-col">
               <h4>Trust</h4>
-              <a href="#security">Security</a>
-              <a href="#permissions">Permissions</a>
-              <a href="#compare">Comparison</a>
-              <a href="#faq">FAQ</a>
+              <a href="/security">Security</a>
+              <a href="/permissions">Permissions</a>
+              <a href="/compare">Comparison</a>
+              <a href="/faq">FAQ</a>
             </div>
             <div className="foot-col">
               <h4>Get</h4>
               <a href={SITE.windowsDownloadUrl}>Windows agent</a>
               <a href={SITE.playStoreUrl}>Android app</a>
-              <a href="#download">Releases</a>
+              <a href="/download">Releases</a>
               <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
             </div>
           </div>
           <div className="foot-base">
-            <span>© 2026 Bridge.</span>
+            <span>© 2026 Bridge. Not open source — yet.</span>
+            <span><a href="/privacy" style={{ textDecoration: 'none' }}>Privacy Policy</a> · <span className="live">●</span> all systems local</span>
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+/* ---------------- router ---------------- */
+
+const SECTIONS = ['story', 'features', 'tour', 'setup', 'security', 'permissions', 'compare', 'download', 'updates', 'faq'];
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        {SECTIONS.map((s) => (
+          <Route key={s} path={`/${s}`} element={<Home section={s} />} />
+        ))}
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/privacy-policy" element={<Privacy />} />
+        <Route path="*" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
