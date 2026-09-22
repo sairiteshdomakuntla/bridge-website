@@ -392,11 +392,78 @@ a { color: inherit; }
   font-size: 12.5px;
 }
 .sync-toast .ring { width: 8px; height: 8px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 10px var(--mint); animation: pulse 1.6s infinite; }
+/* friendly hero visual — replaces technical stage mock */
 .stage-caption {
   margin-top: 18px; font-family: var(--mono); font-size: 12px; color: var(--faint);
   display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
 }
 .stage-caption b { color: var(--muted); font-weight: 500; }
+.magic-flow {
+  display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 12px; align-items: stretch;
+  border: 1px solid var(--line); border-radius: 22px;
+  background: linear-gradient(180deg, #101014, #0a0a0c);
+  box-shadow: 0 40px 120px rgba(0,0,0,.6), 0 0 90px rgba(91,140,255,.09);
+  padding: 28px; text-align: left; position: relative; overflow: hidden;
+}
+.magic-flow::before {
+  content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.4), transparent);
+}
+.magic-card {
+  border: 1px solid var(--line); border-radius: 16px;
+  background: rgba(255,255,255,.025); padding: 20px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.magic-card b { font-size: 15px; letter-spacing: -0.01em; }
+.magic-card small { font-size: 12.5px; color: var(--muted); }
+.magic-emoji { font-size: 30px; margin-bottom: 6px; }
+.magic-bubble {
+  margin-top: 10px; font-size: 13px; color: #d4d4d8;
+  background: rgba(94,234,212,.07); border: 1px solid rgba(94,234,212,.25);
+  border-radius: 10px; padding: 9px 12px;
+}
+.magic-bubble.pc { background: rgba(91,140,255,.1); border-color: rgba(91,140,255,.3); }
+.magic-bubble.reply { background: rgba(255,255,255,.05); border-color: var(--line); }
+.magic-arrow { display: grid; place-items: center; align-content: center; gap: 2px; color: var(--mint); font-size: 22px; min-width: 56px; }
+.magic-arrow small { font-family: var(--mono); font-size: 10.5px; color: var(--faint); text-transform: uppercase; letter-spacing: .08em; }
+@media (max-width: 860px) {
+  .magic-flow { grid-template-columns: 1fr; }
+  .magic-arrow { transform: rotate(90deg); padding: 2px 0; }
+  .magic-arrow small { display: none; }
+}
+
+/* everyday moments */
+.moments-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.moment { border: 1px solid var(--line-soft); border-radius: 16px; padding: 22px; background: rgba(255,255,255,.015); }
+.moment b { font-size: 14.5px; display: block; margin-bottom: 6px; }
+.moment p { font-size: 13.5px; color: var(--muted); }
+.moment .big { font-size: 24px; margin-bottom: 10px; display: block; }
+@media (max-width: 900px) { .moments-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .moments-grid { grid-template-columns: 1fr; } }
+
+/* geek disclosure — technical proof hidden until clicked */
+.geek {
+  margin-top: 18px; border: 1px dashed rgba(91,140,255,.35); border-radius: 14px;
+  background: rgba(91,140,255,.04); overflow: hidden;
+}
+.geek summary {
+  list-style: none; cursor: pointer; padding: 14px 18px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  font-size: 14px; font-weight: 600; color: #c4d3ff;
+}
+.geek summary::-webkit-details-marker { display: none; }
+.geek summary:hover { background: rgba(91,140,255,.07); }
+.geek-hint { font-family: var(--mono); font-size: 11px; font-weight: 400; color: var(--faint); border: 1px solid var(--line); padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
+.geek-body { padding: 6px 20px 20px; font-size: 14px; color: var(--muted); }
+.geek-body ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.geek-body li { position: relative; padding-left: 22px; }
+.geek-body li::before { content: '→'; color: var(--mint); font-family: var(--mono); position: absolute; left: 0; top: 0; }
+.geek-body b { color: var(--text); }
+.geek-body p { margin-bottom: 10px; }
+.geek.small { margin-top: 12px; background: rgba(255,255,255,.02); border-color: var(--line); }
+.geek.small summary { font-size: 12.5px; font-weight: 500; color: var(--muted); padding: 10px 14px; }
+.geek.small .geek-body { word-break: break-all; }
+.geek[open] summary { border-bottom: 1px solid var(--line-soft); margin-bottom: 12px; }
 @media (max-width: 860px) {
   .stage-body { grid-template-columns: 1fr; }
   .win-main { border-right: none; border-bottom: 1px solid var(--line-soft); }

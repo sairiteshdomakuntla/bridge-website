@@ -41,7 +41,7 @@ function useReveal() {
   }, []);
 }
 
-const ROTATE_WORDS = ['copy', 'paste', 'reply', 'present', 'share'];
+const ROTATE_WORDS = ['Copy', 'Reply', 'Share', 'Present', 'Paste'];
 
 /** Deep-link support: /features, /security … scroll to the matching section. */
 function useSectionScroll(section?: string) {
@@ -123,36 +123,36 @@ const PERMS: Perm[] = [
 
 const FAQS = [
   {
-    q: 'Is Bridge a cloud service? Where does my data go?',
-    a: 'Nowhere except between your two devices. Bridge opens a direct Socket.IO connection over your local network (usually Wi-Fi) and encrypts every message with AES-256-GCM. There is no account, no relay server, no analytics endpoint. Unplug your router from the internet and Bridge still works.',
+    q: 'Do I need to be technical to use Bridge?',
+    a: 'Not at all. If you can copy-paste and scan a QR code, you can use Bridge. Install both apps, join the same Wi-Fi, scan once — then it just works in the background.',
   },
   {
-    q: 'Why does Android clipboard sync need a “Sync Now” tap?',
-    a: 'Since Android 10, the OS only hands clipboard contents to the app whose window is currently focused (the isUidFocused gate in ClipboardService). No third-party app can poll it in the background — not with a foreground service, not with accessibility. So the flow is: copy anywhere → tap Sync Now on the Bridge notification (a transparent activity that briefly holds focus) → paste on Windows. One tap, and the reason is the OS, not us. We document this instead of pretending otherwise.',
+    q: 'Where does my data go? Is this another cloud app?',
+    a: 'No. Everything travels directly between your phone and your PC over your own Wi-Fi. There is no account, no uploading, no tracking. Turn off your internet (keep Wi-Fi on) and Bridge still works.',
   },
   {
-    q: 'Why does Bridge ask for notification access? That sounds scary.',
-    a: 'It is a powerful permission, so here is exactly what happens: Android hands Bridge the same structured notification data any listener gets (app name, title, text). Bridge forwards it over the encrypted LAN socket to your PC and deletes nothing, uploads nothing. Reply/dismiss actions travel back the same way. You grant it in system Settings, you can revoke it there any time, and mirroring stops instantly.',
+    q: 'Why do I tap “Sync Now” after copying?',
+    a: 'Android only lets the app you are currently using see what you copied — it is a privacy rule built into every Android phone. So you copy, tap Sync Now once on the Bridge notification, then paste on your PC. One extra tap, and your data stays safe.',
   },
   {
-    q: 'Do I need an account? Is there telemetry?',
-    a: 'No account, no sign-in, no telemetry in v1. Pairing is a QR code shown on your PC and scanned by your phone — a 256-bit secret encoded out-of-band that becomes your AES key. Keys live in Windows DPAPI-backed safeStorage and the Android Keystore, never in plain text.',
+    q: 'Why does Bridge ask to read my notifications?',
+    a: 'Only so your texts can show up on your computer with reply. You turn it on yourself in Settings, you can turn it off any time, and nothing is ever uploaded anywhere.',
   },
   {
-    q: 'Phone Link / KDE Connect already exist. Why Bridge?',
-    a: 'Phone Link needs a Microsoft account and routes through the cloud; KDE Connect is excellent but broad and fiddly for some Windows setups. Bridge is narrower and opinionated: Android + Windows, LAN-only, QR pairing in seconds, clipboard (text + images), file transfer via Share Sheet, notification reply, phone-as-trackpad/keyboard/media-remote, and phone-as-camera — with every permission justified on this page.',
+    q: 'Do I need an account? Are you tracking me?',
+    a: 'No account, no sign-in, no tracking in v1. Pairing is just a QR code on your PC screen scanned by your phone.',
+  },
+  {
+    q: 'How is this different from Phone Link?',
+    a: 'Phone Link needs a Microsoft account and the internet. Bridge needs neither — just your Wi-Fi. It also does a few things Phone Link does not: send any file in one tap, use your phone as a webcam or remote, and ring your phone even on silent.',
   },
   {
     q: 'What do I need to run it?',
-    a: 'A Windows 10/11 PC and an Android phone on the same local network, plus about two minutes. Install the Windows agent, install the Android app, scan the QR on your PC screen. No router configuration, no accounts, no cable.',
+    a: 'A Windows 10/11 PC and an Android phone on the same Wi-Fi, plus about two minutes. Install both apps, scan the code, done.',
   },
   {
-    q: 'Is Bridge open source?',
-    a: 'Not yet. The protocol and permission model are documented openly on this page (including the wire format), and the plan is to open the code once the v1 release is stable. Until then, judge us by specificity: everything Bridge does is listed under Permissions with reasons.',
-  },
-  {
-    q: 'My firewall / Play Protect warns me. Is it safe?',
-    a: 'Expected, and safe to proceed — with eyes open. The Windows agent is new, so SmartScreen may flag the unsigned installer; the APK installs outside the Play Store, so Android shows the standard sideload prompt. Both warnings exist because the apps are new and self-distributed, not because of malicious behavior. Verify the file names and versions in the Download section, keep both devices on your own network, and revoke permissions any time.',
+    q: 'Is Bridge safe to install? My PC warned me.',
+    a: 'Yes — that warning just means the app is new. Windows flags any new, unsigned installer, and Android flags any app installed outside the Play Store. As long as you downloaded from this site, on your own Wi-Fi, you are good. You can remove permissions or uninstall any time.',
   },
 ];
 
@@ -230,13 +230,12 @@ function Home({ section }: { section?: string }) {
           </a>
           <div className="nav-links">
             <a href="/features">Features</a>
-            <a href="/tour">Tour</a>
-            <a href="/security">Security</a>
-            <a href="/permissions">Permissions</a>
-            <a href="/download">Download</a>
+            <a href="/setup">How it works</a>
+            <a href="/love">Reviews</a>
             <a href="/faq">FAQ</a>
+            <a href="/download">Download</a>
           </div>
-          <a className="nav-cta" href="/download">Get Bridge</a>
+          <a className="nav-cta" href="/download">Get Bridge — free</a>
           <button className="nav-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
             {menuOpen ? '✕' : '☰'}
           </button>
@@ -245,11 +244,10 @@ function Home({ section }: { section?: string }) {
       {menuOpen && (
         <div className="mobile-menu" onClick={() => setMenuOpen(false)}>
           <a href="/features">Features</a>
-          <a href="/tour">Tour</a>
-          <a href="/security">Security</a>
-          <a href="/permissions">Permissions</a>
-          <a href="/download">Download</a>
+          <a href="/setup">How it works</a>
+          <a href="/love">Reviews</a>
           <a href="/faq">FAQ</a>
+          <a href="/download">Download</a>
         </div>
       )}
 
@@ -260,8 +258,8 @@ function Home({ section }: { section?: string }) {
         <div className="wrap hero-inner">
           <div className="hero-badge">
             <Logo size={20} />
-            Android ↔ Windows continuity
-            <span className="ver">v{SITE.appVersion}</span>
+            For Android + Windows
+            <span className="ver">v{SITE.appVersion} · free</span>
           </div>
           <h1>
             Your phone and PC,
@@ -274,8 +272,8 @@ function Home({ section }: { section?: string }) {
                 {word}
               </span>
             </span>{' '}
-            on your phone, land on your PC. Clipboard, files, notifications, texts, even your
-            phone-as-trackpad — <strong>over your own Wi-Fi, encrypted, with no account and no cloud.</strong>
+            on your phone, appear on your computer. OTPs, photos, files, texts —{' '}
+            <strong>no cables, no accounts, no uploading to the internet.</strong>
           </p>
           <div className="hero-ctas">
             <a className="btn btn-specular" href="/download">
@@ -286,66 +284,44 @@ function Home({ section }: { section?: string }) {
             </a>
           </div>
           <div className="hero-trust">
-            <span className="trust-chip"><i />LAN-only · no cloud relay</span>
-            <span className="trust-chip"><i />AES-256-GCM end-to-end</span>
-            <span className="trust-chip"><i />No account · no telemetry</span>
-            <span className="trust-chip"><i />QR pairing · 10 seconds</span>
+            <span className="trust-chip"><i />No account needed</span>
+            <span className="trust-chip"><i />Works on your home Wi-Fi</span>
+            <span className="trust-chip"><i />Private by design</span>
+            <span className="trust-chip"><i />Setup in 2 minutes</span>
           </div>
 
-          {/* product stage */}
+          {/* friendly product visual — no IPs, no ports, no jargon */}
           <div className="stage">
-            <div className="stage-frame">
-              <div className="win-bar">
-                <div className="lights">
-                  <i style={{ background: '#fb7185' }} />
-                  <i style={{ background: '#fbbf24' }} />
-                  <i style={{ background: '#5eead4' }} />
-                </div>
-                <div className="addr"><b>● LAN</b> 192.168.1.4 : 4000 · encrypted</div>
+            <div className="magic-flow reveal in">
+              <div className="magic-card">
+                <div className="magic-emoji">📱</div>
+                <b>Copy on your phone</b>
+                <small>OTP, photo, link — anything</small>
+                <div className="magic-bubble">“482 916 — expires in 4 min”</div>
               </div>
-              <div className="stage-body">
-                <div className="win-main">
-                  <div className="clip-card">
-                    <div className="meta"><span className="src">phone → pc</span><span className="time">just now</span></div>
-                    <p>“OTP for the deployment is 482 916 — expires in 4 min”</p>
-                    <div className="paste-hint">⌘V / Ctrl+V to paste anywhere on Windows</div>
-                  </div>
-                  <div className="notif-row">
-                    <div className="avatar">A</div>
-                    <div style={{ flex: 1 }}>
-                      <b>WhatsApp · Alice</b>
-                      <small>“Send me the files when the build passes?”</small>
-                      <div className="reply">
-                        <input defaultValue="On it — pushing now" readOnly />
-                        <button>Reply</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="clip-card">
-                    <div className="meta"><span className="src">share sheet → pc</span><span className="time">12s ago</span></div>
-                    <p>📁 design-specs.pdf · received via share sheet</p>
-                  </div>
-                </div>
-                <div className="phone-col">
-                  <div className="phone-mock">
-                    <div className="phone-screen">
-                      <div className="notch" />
-                      <div style={{ fontSize: 13, fontWeight: 650 }}>Bridge</div>
-                      <div className="mono" style={{ fontSize: 11, color: '#5eead4' }}>● connected · Home Wi-Fi</div>
-                      <div className="qr-box">
-                        <div className="qr-grid" />
-                        <div className="mono" style={{ fontSize: 11, color: '#a1a1aa' }}>paired · AES-256-GCM</div>
-                      </div>
-                      <div className="sync-toast"><span className="ring" /><span>Synced clipboard → PC</span></div>
-                    </div>
-                  </div>
-                </div>
+              <div className="magic-arrow" aria-hidden="true">
+                <span>→</span>
+                <small>instant</small>
+              </div>
+              <div className="magic-card">
+                <div className="magic-emoji">💻</div>
+                <b>Paste on your PC</b>
+                <small>Just press Ctrl+V anywhere</small>
+                <div className="magic-bubble pc">482 916 ✓ pasted</div>
+              </div>
+              <div className="magic-arrow" aria-hidden="true">
+                <span>→</span>
+                <small>reply too</small>
+              </div>
+              <div className="magic-card">
+                <div className="magic-emoji">💬</div>
+                <b>Reply without touching phone</b>
+                <small>Type on your big keyboard</small>
+                <div className="magic-bubble reply">“On it — sending now ✓”</div>
               </div>
             </div>
             <div className="stage-caption">
-              <span><b>← phone</b> copy, files, reply</span>
-              <span><b>pc →</b> paste, type, present</span>
-              <span><b>⇄</b> same Wi-Fi · nothing leaves the room</span>
+              <span><b>Same Wi-Fi</b> · nothing uploaded to the internet</span>
             </div>
           </div>
         </div>
@@ -354,12 +330,12 @@ function Home({ section }: { section?: string }) {
           <div className="marquee-track">
             {[0, 1].map((k) => (
               <span key={k} style={{ display: 'contents' }}>
-                <span><b>universal clipboard</b> · text + images</span>
-                <span>file transfer → <b>share sheet to pc</b></span>
-                <span>reply to <b>texts from desktop</b></span>
-                <span>phone as <b>trackpad + keyboard</b></span>
-                <span>phone as <b>camera</b></span>
-                <span><b>find my phone</b> + battery</span>
+                <span><b>copy-paste</b> between phone & PC</span>
+                <span>send <b>photos in one tap</b></span>
+                <span>reply to <b>texts from computer</b></span>
+                <span>phone as <b>remote + keyboard</b></span>
+                <span>phone as <b>webcam</b></span>
+                <span><b>find lost phone</b> in seconds</span>
                 <span><b>no account</b> · no cloud</span>
               </span>
             ))}
@@ -367,24 +343,45 @@ function Home({ section }: { section?: string }) {
         </div>
       </header>
 
+      {/* ---------- everyday moments ---------- */}
+      <section className="block" id="moments">
+        <div className="wrap">
+          <div className="sec-head reveal">
+            <span className="eyebrow">Made for real life</span>
+            <h2>Stop emailing yourself. <span className="thin">Seriously.</span></h2>
+            <p>If any of these feel familiar, Bridge was built for you.</p>
+          </div>
+          <div className="moments-grid">
+            {[
+              ['🔑', 'OTPs that expire', 'Bank code on your phone, login on your PC? Copy once, paste on PC. Done before it expires.'],
+              ['📸', 'Photos stuck on phone', 'Tap Share → Bridge. The photo is on your computer, full quality, no cable, no WhatsApp compression.'],
+              ['💬', 'Texts while you work', 'Friend texts mid-work? Reply from your keyboard without ever picking up the phone.'],
+              ['🛋️', 'Movie night + presentations', 'Phone becomes a remote: pause, volume, next slide — from the couch or the back of the room.'],
+            ].map(([icon, title, body]) => (
+              <div className="moment reveal" key={title}><span className="big">{icon}</span><b>{title}</b><p>{body}</p></div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ---------- story ---------- */}
       <section className="block" id="story">
         <div className="wrap">
           <div className="sec-head reveal">
             <span className="eyebrow">Why Bridge exists</span>
             <h2>You live in two machines. <span className="thin">It shouldn’t feel like it.</span></h2>
-            <p>Apple users got Continuity a decade ago. Android + Windows users got cables, email-to-self, and cloud detours. Bridge is the missing layer — built local-first, because your clipboard should never take a world tour.</p>
+            <p>iPhone + Mac users got this years ago. Android + Windows users got cables and email-to-self. Bridge fixes that — simply and privately.</p>
           </div>
           <div className="story-grid">
             <div className="story-card reveal">
               <span className="tag">✕ the old way</span>
               <h3>Copy on phone. Email it to yourself. Open laptop. Download. Paste.</h3>
-              <p>OTPs expire. Files get stuck in email drafts. Replies wait until you find your phone under a pillow. Every hop is a cloud server reading over your shoulder.</p>
+              <p>Codes expire. Photos lose quality. Replies wait until you find your phone. And every hop passes through someone else's server.</p>
             </div>
             <div className="story-card after reveal">
               <span className="tag">✓ the Bridge way</span>
               <h3>Copy on phone. Paste on PC. That’s the whole manual.</h3>
-              <p>One QR scan pairs your devices over your own Wi-Fi. From then on your clipboard, notifications, files and even your phone’s camera just show up where you’re working.</p>
+              <p>Scan one code to connect. From then on your clipboard, photos, texts and even your phone’s camera just show up where you’re working.</p>
             </div>
           </div>
         </div>
@@ -395,47 +392,60 @@ function Home({ section }: { section?: string }) {
         <div className="wrap">
           <div className="sec-head reveal">
             <span className="eyebrow">What it does</span>
-            <h2>Six jobs, <span className="thin">one quiet app.</span></h2>
-            <p>Bridge isn’t a dashboard you manage. It’s plumbing — features that disappear into muscle memory within a day.</p>
+            <h2>Everything you wish <span className="thin">just worked.</span></h2>
+            <p>No settings to babysit. Things you do every day, now effortless.</p>
           </div>
           <div className="bento">
             <div className="bcard reveal">
               <div className="icon">📋</div>
-              <h3>Universal clipboard — text & images</h3>
-              <p>Copy text or an image on Android, paste it on Windows with <code>Ctrl+V</code>. History is kept on both sides, echo-proofed by an event-dedupe store so nothing pastes twice. Copy in any app → tap <code>Sync Now</code> → paste on PC.</p>
-              <div className="foot"><b>→</b> one tap, thanks to Android 10+ focus rules (explained honestly below)</div>
+              <h3>Copy on phone, paste on PC</h3>
+              <p>Text, links, codes, even pictures. Copy on Android, press Ctrl+V on Windows. History included, so yesterday’s copy is still there.</p>
+              <div className="foot"><b>→</b> one extra tap, then paste anywhere</div>
             </div>
             <div className="bcard reveal">
               <div className="icon">📁</div>
-              <h3>File transfer & Share Sheet</h3>
-              <p>Send files, photos, videos, or documents directly to your PC. Tap Share in any Android app and choose Bridge, or pick and send files directly from the app dashboard.</p>
-              <div className="foot"><b>→</b> 64 KB chunks + SHA-256 checks</div>
+              <h3>Send photos & files in one tap</h3>
+              <p>In any app tap Share and choose Bridge. Photos, videos, PDFs land on your PC instantly in full quality.</p>
+              <div className="foot"><b>→</b> no cable, no compression, no upload</div>
             </div>
             <div className="bcard reveal">
               <div className="icon">💬</div>
-              <h3>Texts, answered from your keyboard</h3>
-              <p>WhatsApp, Telegram, SMS — they surface on Windows with inline reply and dismiss. Your full-size keyboard finally answers your phone.</p>
-              <div className="foot"><b>→</b> uses notification access, nothing else</div>
+              <h3>Answer texts from your computer</h3>
+              <p>WhatsApp, Telegram, SMS show up on Windows. Type replies on your real keyboard, dismiss the noise, phone stays in your pocket.</p>
+              <div className="foot"><b>→</b> your chats, at typing speed</div>
             </div>
             <div className="bcard reveal">
               <div className="icon">▦</div>
-              <h3>Phone as trackpad & remote</h3>
-              <p>Trackpad with natural scrolling, a keyboard tab, media keys, volume and mute — plus a sensitivity slider. Couch-present like you mean it.</p>
-              <div className="foot"><b>→</b> ~60 Hz deltas, fire-and-forget</div>
+              <h3>Phone becomes a remote</h3>
+              <p>Control your PC from the couch: move the mouse, type, change volume, pause movies, flip slides.</p>
+              <div className="foot"><b>→</b> presentations + movie nights</div>
             </div>
             <div className="bcard reveal">
               <div className="icon">🎥</div>
-              <h3>Phone as camera for your PC</h3>
-              <p>A WebRTC video track turns your phone into a wireless webcam over the same encrypted LAN link. Great cameras, zero new hardware.</p>
-              <div className="foot"><b>→</b> peer-to-peer, no relay server</div>
+              <h3>Use your phone as a webcam</h3>
+              <p>Your phone camera is 10× better than your laptop’s. One tap and meetings use it — wirelessly.</p>
+              <div className="foot"><b>→</b> look sharp, zero new hardware</div>
             </div>
             <div className="bcard reveal">
               <div className="icon">🔔</div>
-              <h3>Find My Phone & battery monitor</h3>
-              <p>Misplaced your phone under a cushion? Click “Ring phone” from your Windows dashboard to sound an alert even on silent, and monitor your live battery level.</p>
-              <div className="foot"><b>→</b> rings ~15s at max volume</div>
+              <h3>Find a lost phone in seconds</h3>
+              <p>Phone under a cushion? Click “Ring” on your PC — it rings loud even on silent. Plus live battery on screen.</p>
+              <div className="foot"><b>→</b> works even on silent mode</div>
             </div>
           </div>
+          <details className="geek reveal">
+            <summary><span>🤓 Nerdy? Show me how it actually works</span><span className="geek-hint">proof inside</span></summary>
+            <div className="geek-body">
+              <ul>
+                <li><b>Clipboard:</b> text + images, both directions, history on both sides, echo-proofed dedupe store. Android 10+ focus rules mean one “Sync Now” tap.</li>
+                <li><b>Files:</b> 64 KB chunks with SHA-256 checks over direct socket — resume-safe, verified.</li>
+                <li><b>Notifications:</b> via Android notification-listener, reply + dismiss round-trip. Revoke any time.</li>
+                <li><b>Remote:</b> ~60 Hz deltas, fire-and-forget trackpad + keyboard + media keys, sensitivity slider.</li>
+                <li><b>Camera:</b> WebRTC peer-to-peer video over the same LAN link. No relay server.</li>
+                <li><b>Ring:</b> ~15 s max-volume ring + live battery over the same encrypted channel.</li>
+              </ul>
+            </div>
+          </details>
         </div>
       </section>
 
@@ -443,11 +453,11 @@ function Home({ section }: { section?: string }) {
       <section className="block" id="tour">
         <div className="wrap">
           <div className="sec-head center reveal">
-            <span className="eyebrow">A day with Bridge</span>
-            <h2>Follow one copy <span className="thin">through the whole loop.</span></h2>
+            <span className="eyebrow">See it in action</span>
+            <h2>A normal day <span className="thin">with Bridge on.</span></h2>
           </div>
           <div className="dock reveal">
-            {['Clipboard', 'Notifications', 'Remote', 'Camera'].map((t, i) => (
+            {['Copy-paste', 'Texts', 'Remote', 'Camera'].map((t, i) => (
               <button key={t} type="button" className={tour === i ? 'active' : ''} onClick={() => setTour(i)}>{t}</button>
             ))}
           </div>
@@ -455,35 +465,35 @@ function Home({ section }: { section?: string }) {
             {tour === 0 && (
               <>
                 <div>
-                  <h3><span className="n">01 / CLIPBOARD</span>Copy there. Paste here.</h3>
-                  <p>The flow your hands learn in minutes. Text, links, OTPs, images — everything rides the same encrypted envelope.</p>
+                  <h3><span className="n">01 / COPY-PASTE</span>Copy there. Paste here.</h3>
+                  <p>Your hands learn it in minutes. Codes, links, pictures — all move instantly.</p>
                   <ul className="tour-list">
                     <li>Copy anything on your phone, in any app</li>
-                    <li>Tap Sync Now on the Bridge notification</li>
-                    <li>Press <span className="kbd">Ctrl</span> + <span className="kbd">V</span> on Windows — done</li>
+                    <li>Tap Sync Now on the Bridge popup</li>
+                    <li>Press <span className="kbd">Ctrl</span> + <span className="kbd">V</span> on PC — done</li>
                   </ul>
                 </div>
                 <div className="tour-visual">
-                  <div className="clip-card"><div className="meta"><span className="src">phone → pc</span><span className="time">now</span></div><p>github.com/release — v1.0.0 is out 🎉</p></div>
-                  <div className="clip-card"><div className="meta"><span className="src">pc → phone</span><span className="time">2m</span></div><p>Meet link: 6pm, bring the demo build</p></div>
-                  <div className="mono" style={{ fontSize: 12, color: '#6b6b76' }}>dedupe: 2 events · 0 echoes · ✓ encrypted</div>
+                  <div className="clip-card"><div className="meta"><span className="src">phone → pc</span><span className="time">now</span></div><p>“OTP is 482 916 — expires in 4 min”</p></div>
+                  <div className="clip-card"><div className="meta"><span className="src">pc → phone</span><span className="time">2m</span></div><p>Meet link: 6pm, bring the demo</p></div>
+                  <div className="mono" style={{ fontSize: 12, color: '#6b6b76' }}>✓ arrived instantly · nothing uploaded</div>
                 </div>
               </>
             )}
             {tour === 1 && (
               <>
                 <div>
-                  <h3><span className="n">02 / NOTIFICATIONS</span>Your chats, at full typing speed.</h3>
-                  <p>Messages arrive on Windows the moment they hit your phone. Reply inline, dismiss the noise, never pick the phone up mid-flow.</p>
+                  <h3><span className="n">02 / TEXTS</span>Your chats, on your big keyboard.</h3>
+                  <p>Messages appear on your PC the second they hit your phone. Reply fast, ignore fast.</p>
                   <ul className="tour-list">
-                    <li>WhatsApp, Telegram, SMS + any notifying app</li>
-                    <li>Inline reply and dismiss from Windows</li>
-                    <li>Revoke listener access any time — mirroring stops dead</li>
+                    <li>WhatsApp, Telegram, SMS — any app</li>
+                    <li>Reply and dismiss right from PC</li>
+                    <li>Turn off any time — you stay in control</li>
                   </ul>
                 </div>
                 <div className="tour-visual">
-                  <div className="notif-row"><div className="avatar">S</div><div><b>SMS · Bank</b><small>Your OTP is 482 916. Valid 4 min.</small></div></div>
-                  <div className="notif-row"><div className="avatar tg">T</div><div style={{ flex: 1 }}><b>Telegram · Design group</b><small>“Final mock is in Figma — review?”</small><div className="reply"><input defaultValue="Looking now 👀" readOnly /><button>Send</button></div></div></div>
+                  <div className="notif-row"><div className="avatar">S</div><div><b>SMS · Bank</b><small>Your code is 482 916. Valid 4 min.</small></div></div>
+                  <div className="notif-row"><div className="avatar tg">T</div><div style={{ flex: 1 }}><b>Telegram · Design group</b><small>“Final mock is ready — review?”</small><div className="reply"><input defaultValue="Looking now 👀" readOnly /><button>Send</button></div></div></div>
                 </div>
               </>
             )}
@@ -491,17 +501,17 @@ function Home({ section }: { section?: string }) {
               <>
                 <div>
                   <h3><span className="n">03 / REMOTE</span>The couch is now a control room.</h3>
-                  <p>Trackpad, keyboard, media keys. Scroll a doc, flip slides, pause the movie — phone in hand, feet up.</p>
+                  <p>Scroll docs, flip slides, pause the movie — phone in hand, feet up.</p>
                   <ul className="tour-list">
-                    <li>Trackpad with natural two-finger scroll</li>
-                    <li>Keyboard tab + Enter / Backspace / Space</li>
-                    <li>Play, next, volume, mute — media-focus aware</li>
+                    <li>Mouse pad with smooth scrolling</li>
+                    <li>Type + play, pause, volume, mute</li>
+                    <li>Great for movies and presentations</li>
                   </ul>
                 </div>
                 <div className="tour-visual">
                   <div className="trackpad"><span className="cursor" /></div>
                   <div className="mediakeys"><span>⏯ play</span><span>⏭ next</span><span>🔊 vol+</span><span>🔉 vol−</span><span>⛔ mute</span></div>
-                  <div className="mono" style={{ fontSize: 12, color: '#6b6b76', marginTop: 12 }}>sensitivity 1.8× · 60 Hz · LAN latency ≈ ms</div>
+                  <div className="mono" style={{ fontSize: 12, color: '#6b6b76', marginTop: 12 }}>feels instant · same Wi-Fi</div>
                 </div>
               </>
             )}
@@ -509,17 +519,17 @@ function Home({ section }: { section?: string }) {
               <>
                 <div>
                   <h3><span className="n">04 / CAMERA</span>Your best webcam is in your pocket.</h3>
-                  <p>One tap turns the phone into a wireless camera for the PC — over the same encrypted LAN peer connection.</p>
+                  <p>One tap and meetings use your phone camera. Plus find-my-phone and battery, right alongside.</p>
                   <ul className="tour-list">
-                    <li>WebRTC video, phone → PC, no relay</li>
-                    <li>Find-my-phone ring + live battery alongside</li>
+                    <li>Way sharper than most laptop cameras</li>
+                    <li>Ring a lost phone + see battery live</li>
                     <li>Nothing recorded, nothing uploaded</li>
                   </ul>
                 </div>
                 <div className="tour-visual" style={{ display: 'grid', placeItems: 'center', textAlign: 'center' }}>
                   <div>
                     <div style={{ fontSize: 44 }}>🎥</div>
-                    <div className="mono" style={{ fontSize: 12, color: '#5eead4', marginTop: 8 }}>● live · 1280×720 · LAN peer</div>
+                    <div className="mono" style={{ fontSize: 12, color: '#5eead4', marginTop: 8 }}>● live preview</div>
                     <div className="mono" style={{ fontSize: 12, color: '#6b6b76', marginTop: 4 }}>🔋 78% · not charging</div>
                   </div>
                 </div>
@@ -535,12 +545,41 @@ function Home({ section }: { section?: string }) {
           <div className="sec-head reveal">
             <span className="eyebrow">Setup · two minutes</span>
             <h2>Pair once. <span className="thin">Forget it exists.</span></h2>
-            <p>No accounts, no cables, no router surgery. If both devices share a Wi-Fi network, you’re done.</p>
+            <p>No accounts, no cables, no tech skills needed. If both devices share Wi-Fi, you’re done.</p>
           </div>
           <div className="steps">
-            <div className="step reveal"><div className="num">1</div><h3>Install both halves</h3><p>Windows agent on your PC, Bridge app on your Android phone. Links in <a href="/download" style={{ color: '#c4d3ff' }}>Download</a> — one <code>.exe</code>, one <code>.apk</code> / Play listing.</p></div>
-            <div className="step reveal"><div className="num">2</div><h3>Join the same Wi-Fi</h3><p>Phone and PC on the same local network. Bridge auto-selects the right LAN adapter and ignores virtual ones (VMs, VPNs, WSL).</p></div>
-            <div className="step reveal"><div className="num">3</div><h3>Scan the QR on your PC</h3><p>The PC shows a QR encoding <code>ip + port + 256-bit key</code>. Scan it with Bridge. Handshake verifies, AES-GCM switches on, and you’re paired — keys stored in the OS keychain on both sides.</p></div>
+            <div className="step reveal"><div className="num">1</div><h3>Install both apps</h3><p>One on your Windows PC, one on your Android phone. Links in <a href="/download" style={{ color: '#c4d3ff' }}>Download</a> below.</p></div>
+            <div className="step reveal"><div className="num">2</div><h3>Join the same Wi-Fi</h3><p>Home, office, hotspot — as long as phone and PC are on the same network, Bridge finds its way.</p></div>
+            <div className="step reveal"><div className="num">3</div><h3>Scan the code on your PC</h3><p>Your PC shows a code. Point your phone at it. Connected — everything is private from here on.</p></div>
+          </div>
+          <details className="geek reveal">
+            <summary><span>🤓 What happens under the hood?</span><span className="geek-hint">for the curious</span></summary>
+            <div className="geek-body">
+              <p>The QR encodes your PC’s address plus a fresh 256-bit secret. After one handshake, every message is end-to-end encrypted (AES-256-GCM), keys live in the OS keychain on both sides, and Bridge auto-picks the right network adapter while ignoring virtual ones.</p>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      {/* ---------- love ---------- */}
+      <section className="block" id="love">
+        <div className="wrap">
+          <div className="sec-head reveal">
+            <span className="eyebrow">People like you</span>
+            <h2>Built for humans, <span className="thin">not IT departments.</span></h2>
+          </div>
+          <div className="cr-grid">
+            {[
+              ['🎓 “I stopped typing OTPs by hand.”', 'Aarav · student', 'Bank codes, college logins, exam portals — I copy on my phone and paste on my laptop. Saves me every single day.'],
+              ['💼 “My phone stays in my bag at work.”', 'Meera · designer', 'I reply to WhatsApp from my keyboard and drag client photos straight to my PC. No cables on my desk anymore.'],
+              ['🏠 “Even my dad uses it.”', 'Ravi · engineer', 'He just taps Share → Bridge to get photos on his computer. If he can use it without calling me, anyone can.'],
+            ].map(([title, who, body]) => (
+              <div className="cr-card reveal" key={who} style={{ gridColumn: 'span 1' }}>
+                <h3 style={{ fontSize: 16 }}>{title}</h3>
+                <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 10 }}>{body}</p>
+                <div className="mono" style={{ fontSize: 12, color: 'var(--faint)' }}>{who}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -549,20 +588,32 @@ function Home({ section }: { section?: string }) {
       <section className="block" id="security">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">Trust, engineered</span>
-            <h2>Your data never leaves the room. <span className="thin">Here’s the proof.</span></h2>
-            <p>“We take privacy seriously” is cheap. Architecture is expensive. So here is ours, down to the byte layout.</p>
+            <span className="eyebrow">Privacy, in plain words</span>
+            <h2>Yours stays yours. <span className="thin">That’s the whole policy.</span></h2>
+            <p>No account. No cloud. No tracking. Your stuff moves directly between your two devices and nowhere else.</p>
           </div>
-          <div className="sec-grid">
-            <div className="diagram reveal">
-              <div className="node"><div className="glyph">📱</div><div><b>Android app</b><small>flutter_secure_storage · Keystore</small></div></div>
-              <div className="link">⇅ AES-256-GCM · bridge-message · your Wi-Fi only</div>
-              <div className="node"><div className="glyph" style={{ color: '#8fb0ff' }}><WindowsGlyph size={18} /></div><div><b>Windows agent</b><small>Electron safeStorage · DPAPI</small></div></div>
-              <div className="blocked"><span>🚫</span><span><b>No cloud.</b> No relay, no account server, no analytics endpoint. Offline router? Still works.</span></div>
-            </div>
-            <div className="codeblock reveal">
-              <div className="chead"><span style={{ color: '#fb7185' }}>●</span><span style={{ color: '#fbbf24' }}>●</span><span style={{ color: '#5eead4' }}>●</span>&nbsp; every packet on the wire</div>
-              <pre>{`// one Socket.IO event, always encrypted
+          <div className="assurance">
+            {[
+              ['🏠', 'Stays in the room', 'Phone → PC over your own Wi-Fi. Turn off the internet and it still works.'],
+              ['🚫', 'No account, no tracking', 'No sign-up, no ads, no analytics. There is nothing to leak because nothing is collected.'],
+              ['🔑', 'Locked + undoable', 'Connected by a one-time scan. Remove a device or turn off a permission and it stops instantly.'],
+            ].map(([icon, title, body]) => (
+              <div className="assure reveal" key={title} style={{ gridColumn: 'span 1' }}><span className="big">{icon}</span><b>{title}</b><p>{body}</p></div>
+            ))}
+          </div>
+          <details className="geek reveal">
+            <summary><span>🤓 Skeptic? Inspect the technical proof</span><span className="geek-hint">packets, keys, code</span></summary>
+            <div className="geek-body">
+              <div className="sec-grid">
+                <div className="diagram reveal">
+                  <div className="node"><div className="glyph">📱</div><div><b>Android app</b><small>flutter_secure_storage · Keystore</small></div></div>
+                  <div className="link">⇅ AES-256-GCM · bridge-message · your Wi-Fi only</div>
+                  <div className="node"><div className="glyph" style={{ color: '#8fb0ff' }}><WindowsGlyph size={18} /></div><div><b>Windows agent</b><small>Electron safeStorage · DPAPI</small></div></div>
+                  <div className="blocked"><span>🚫</span><span><b>No cloud.</b> No relay, no account server, no analytics endpoint. Offline router? Still works.</span></div>
+                </div>
+                <div className="codeblock reveal">
+                  <div className="chead"><span style={{ color: '#fb7185' }}>●</span><span style={{ color: '#fbbf24' }}>●</span><span style={{ color: '#5eead4' }}>●</span>&nbsp; every packet on the wire</div>
+                  <pre>{`// one Socket.IO event, always encrypted
 socket.emit('bridge-message', base64([
   nonce      // 12 random bytes
   ciphertext // your JSON envelope
@@ -573,30 +624,17 @@ socket.emit('bridge-message', base64([
 { eventId, type, origin, timestamp, payload }
 // types: clipboard · file · notification
 //        remote-input · device · camera-signal`}</pre>
+                </div>
+              </div>
+              <div className="honest reveal" style={{ marginTop: 14 }}>
+                <span className="flag">⚠️</span>
+                <div>
+                  <h3>One honest limitation: why clipboard needs one tap</h3>
+                  <p>Since Android 10, only the app you are actively using can see what you copied. No app can read it silently in the background. So you copy → tap <b>Sync Now</b> → paste. One tap, and it is Android protecting you — not us being lazy.</p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="assurance">
-            {[
-              ['🔑', 'QR-paired keys', 'A fresh 256-bit secret per pairing, delivered out-of-band via QR. Never typed, never transmitted in clear.'],
-              ['💾', 'OS-grade key storage', 'Windows DPAPI + Electron safeStorage. Android Keystore via secure storage. No plaintext secrets on disk.'],
-              ['🔁', 'Echo-proof sync', 'Both sides keep a capped event-dedupe store, so a synced paste never loops back and pastes twice.'],
-              ['📴', 'Revocable by design', 'Unpair from either side and keys are wiped. Revoke Android permissions and that feature simply stops.'],
-            ].map(([icon, title, body]) => (
-              <div className="assure reveal" key={title}><span className="big">{icon}</span><b>{title}</b><p>{body}</p></div>
-            ))}
-          </div>
-          <div className="honest reveal">
-            <span className="flag">⚠️</span>
-            <div>
-              <h3>An honest limitation: why clipboard needs one tap</h3>
-              <p>Since Android 10, <code>ClipboardManager</code> only answers the app holding the focused window (<code>isUidFocused</code> in AOSP’s ClipboardService). No foreground service, accessibility hack, or background permission changes that for third-party apps. So Bridge doesn’t pretend:</p>
-              <ul>
-                <li>Copy anywhere → tap <b>Sync Now</b> on the Bridge notification → paste on PC.</li>
-                <li>The notification action opens a transparent activity that briefly holds real focus — the same gate as opening the app — then routes through the normal pipeline.</li>
-                <li>If Android ever opens a legitimate background path, we’ll adopt it. Until then: one tap, zero shenanigans.</li>
-              </ul>
-            </div>
-          </div>
+          </details>
         </div>
       </section>
 
@@ -604,33 +642,38 @@ socket.emit('bridge-message', base64([
       <section className="block" id="permissions">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">Full disclosure</span>
-            <h2>Every permission. <span className="thin">Every reason.</span></h2>
-            <p>Apps like Bridge need sensitive access to do anything useful. So here is the complete ledger — what, why, when you’re asked, and what breaks if you say no. Written for people who actually read this stuff.</p>
+            <span className="eyebrow">Permissions</span>
+            <h2>We ask nicely. <span className="thin">And explain everything.</span></h2>
+            <p>Bridge needs a few sensitive permissions to do its job. Each one is asked only when its feature needs it, and you can take it back any time.</p>
           </div>
           <div className="perm-intro reveal">
-            <span className="trust-chip"><i />8 entries · 0 hidden</span>
-            <span className="trust-chip"><i />requested only when the feature needs it</span>
+            <span className="trust-chip"><i />asked only when needed</span>
             <span className="trust-chip"><i />everything revocable</span>
+            <span className="trust-chip"><i />nothing hidden</span>
           </div>
-          <div className="perm-table reveal">
-            <div className="perm-row head"><div>Permission / capability</div><div>Why · when · if denied</div></div>
-            {PERMS.map((p) => (
-              <div className="perm-row" key={p.perm}>
-                <div className="perm-name">
-                  <code>{p.perm}</code>
-                  <span className={`plat ${p.platform}`}>{p.platform}</span>
-                </div>
-                <div className="perm-detail">
-                  <p className="why">{p.why}</p>
-                  <div className="meta">
-                    <div><dt>Asked</dt><dd>{p.when}</dd></div>
-                    <div><dt>If denied</dt><dd className="deny">{p.ifDenied}</dd></div>
+          <details className="geek reveal">
+            <summary><span>🤓 Show the full permission-by-permission list</span><span className="geek-hint">6 entries · 0 hidden</span></summary>
+            <div className="geek-body" style={{ padding: 0, border: 'none', background: 'none' }}>
+              <div className="perm-table reveal">
+                <div className="perm-row head"><div>Permission / capability</div><div>Why · when · if denied</div></div>
+                {PERMS.map((p) => (
+                  <div className="perm-row" key={p.perm}>
+                    <div className="perm-name">
+                      <code>{p.perm}</code>
+                      <span className={`plat ${p.platform}`}>{p.platform}</span>
+                    </div>
+                    <div className="perm-detail">
+                      <p className="why">{p.why}</p>
+                      <div className="meta">
+                        <div><dt>Asked</dt><dd>{p.when}</dd></div>
+                        <div><dt>If denied</dt><dd className="deny">{p.ifDenied}</dd></div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          </details>
         </div>
       </section>
 
@@ -659,7 +702,7 @@ socket.emit('bridge-message', base64([
               </tbody>
             </table>
           </div>
-          <p className="compare-note reveal">TL;DR — Phone Link taxes you with an account and the cloud. KDE Connect is great but broad and fiddly. Bridge is the narrow, opinionated one: Android + Windows, paired in seconds, with the tricks neither of them has.</p>
+          <p className="compare-note reveal">TL;DR — Phone Link needs an account and the internet. KDE Connect is powerful but fiddly. Bridge is the simple one: paired in seconds, with the tricks neither of them has.</p>
         </div>
       </section>
 
@@ -667,39 +710,45 @@ socket.emit('bridge-message', base64([
       <section className="block" id="download">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">Get Bridge · v{SITE.appVersion}</span>
+            <span className="eyebrow">Get Bridge · v{SITE.appVersion} · free</span>
             <h2>Two installs. <span className="thin">Two minutes.</span></h2>
-            <p>You need <b>both halves</b> — the Windows agent and the Android app — on the same Wi-Fi network.</p>
+            <p>You need <b>both</b> — one on your PC, one on your phone — on the same Wi-Fi.</p>
           </div>
           <div className="dl-grid">
             <div className="dl-card featured reveal">
-              <div className="os"><div className="glyph win"><WindowsGlyph size={24} /></div><div><h3>Bridge for Windows</h3><div className="file mono">{SITE.windowsInstaller} · Windows 10 / 11 · 64-bit</div></div></div>
+              <div className="os"><div className="glyph win"><WindowsGlyph size={24} /></div><div><h3>For Windows</h3><div className="file mono">Windows 10 / 11 · 64-bit</div></div></div>
               <ul>
-                <li>Pairing QR + connection dashboard</li>
-                <li>Clipboard history, notifications + reply</li>
-                <li>Remote input receiver, camera viewer</li>
+                <li>Shows the code to connect your phone</li>
+                <li>Clipboard history + reply to texts</li>
+                <li>Receives files, camera, remote</li>
               </ul>
-              <a className="btn btn-specular" href={SITE.windowsDownloadUrl} download={SITE.windowsInstaller} style={{ width: '100%', justifyContent: 'center' }}>Download .exe · {SITE.windowsSize}</a>
-              <div className="mono" style={{ fontSize: 11.5, color: '#6b6b76', marginTop: 12, textAlign: 'center' }} title={SITE.windowsSha256}>SHA-256: {shortHash(SITE.windowsSha256)}</div>
+              <a className="btn btn-specular" href={SITE.windowsDownloadUrl} download={SITE.windowsInstaller} style={{ width: '100%', justifyContent: 'center' }}>Download for Windows · {SITE.windowsSize}</a>
+              <details className="geek small">
+                <summary>Verify file · SHA-256</summary>
+                <div className="geek-body mono" style={{ fontSize: 11.5 }} title={SITE.windowsSha256}>{SITE.windowsInstaller}<br />{shortHash(SITE.windowsSha256)} · {SITE.windowsSha256}</div>
+              </details>
             </div>
             <div className="dl-card reveal">
-              <div className="os"><div className="glyph droid"><AndroidGlyph size={24} /></div><div><h3>Bridge for Android</h3><div className="file mono">{SITE.androidApk} · Android 8.0+ · v{SITE.appVersion} ({SITE.androidVersionCode})</div></div></div>
+              <div className="os"><div className="glyph droid"><AndroidGlyph size={24} /></div><div><h3>For Android</h3><div className="file mono">Android 8.0+ · v{SITE.appVersion}</div></div></div>
               <ul>
-                <li>Sync Now clipboard shortcut</li>
-                <li>Share-sheet → send any file to PC</li>
-                <li>Trackpad, camera, ring-my-phone</li>
+                <li>One-tap copy to PC</li>
+                <li>Share any photo or file to PC</li>
+                <li>Remote, camera, find-my-phone</li>
               </ul>
-              <a className="btn btn-ghost" href={SITE.androidDownloadUrl} download={SITE.androidApk} style={{ width: '100%', justifyContent: 'center' }}>Download .apk · {SITE.androidSize}</a>
-              <div className="mono" style={{ fontSize: 11.5, color: '#6b6b76', marginTop: 12, textAlign: 'center' }} title={SITE.androidSha256}>SHA-256: {shortHash(SITE.androidSha256)}</div>
+              <a className="btn btn-ghost" href={SITE.androidDownloadUrl} download={SITE.androidApk} style={{ width: '100%', justifyContent: 'center' }}>Download for Android · {SITE.androidSize}</a>
+              <details className="geek small">
+                <summary>Verify file · SHA-256</summary>
+                <div className="geek-body mono" style={{ fontSize: 11.5 }} title={SITE.androidSha256}>{SITE.androidApk}<br />{shortHash(SITE.androidSha256)} · {SITE.androidSha256}</div>
+              </details>
             </div>
           </div>
           <div className="dl-note reveal">
-            <b>First-run notes (read once, smooth forever):</b>
+            <b>First time? Read this once:</b>
             <ol>
-              <li><b>Windows SmartScreen</b> may flag the installer since it’s newly published and unsigned — click “More info → Run anyway”. Cautious? Match the SHA-256 fingerprint above after downloading.</li>
-              <li><b>Windows Firewall</b> will ask about private-network access on first launch — allow it, or your phone can’t reach the PC.</li>
-              <li><b>Android sideload:</b> allow “install unknown apps” for your browser once, then install. The Play Store listing (coming soon) removes this step.</li>
-              <li><b>Pairing:</b> open the Windows agent → scan its QR with Bridge on your phone → grant notification access only if you want message mirroring.</li>
+              <li><b>Windows asks “Run anyway?”</b> — normal for new apps. Click “More info → Run anyway”.</li>
+              <li><b>Firewall asks about private networks</b> — click Allow, or your phone can’t find the PC.</li>
+              <li><b>Android asks to allow installs</b> — allow once for your browser, then install.</li>
+              <li><b>Connect:</b> open Bridge on PC → scan the code with your phone → done.</li>
             </ol>
           </div>
         </div>
@@ -710,27 +759,26 @@ socket.emit('bridge-message', base64([
         <div className="wrap">
           <div className="sec-head reveal">
             <span className="eyebrow">Momentum</span>
-            <h2>Shipped. <span className="thin">Shipping next.</span></h2>
+            <h2>Ready today. <span className="thin">Getting better.</span></h2>
           </div>
           <div className="cr-grid">
             <div className="cr-card reveal">
-              <h3>v1.0.0 — first public cut <span className="pill">now</span></h3>
+              <h3>v1.0.0 — first release <span className="pill">now</span></h3>
               <ul>
-                <li>QR pairing + AES-256-GCM on every message</li>
-                <li>Clipboard text + image sync with history</li>
-                <li>Instant share-sheet file transfer (files, photos, docs)</li>
-                <li>Notification mirror with reply + dismiss</li>
-                <li>Phone-as-trackpad, keyboard, media keys</li>
-                <li>Phone-as-camera (WebRTC) + ring + battery</li>
+                <li>Copy-paste text + pictures</li>
+                <li>One-tap photo & file sending</li>
+                <li>Reply to texts from PC</li>
+                <li>Phone as remote + webcam</li>
+                <li>Ring lost phone + battery</li>
               </ul>
             </div>
             <div className="cr-card reveal">
-              <h3>Roadmap <span className="pill">next</span></h3>
+              <h3>Coming next <span className="pill">soon</span></h3>
               <ul>
-                <li>Signed Windows installer (bye, SmartScreen)</li>
-                <li>Google Play listing + auto-updates</li>
-                <li>Clipboard history search + pins</li>
-                <li>Open-sourcing the codebase after v1 stabilizes</li>
+                <li>Signed installer (no more warnings)</li>
+                <li>Play Store listing + auto-updates</li>
+                <li>Search + pin your clipboard history</li>
+                <li>Open-sourcing after v1 settles</li>
               </ul>
             </div>
           </div>
@@ -741,8 +789,8 @@ socket.emit('bridge-message', base64([
       <section className="block" id="faq">
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">Questions, answered straight</span>
-            <h2>Asked by skeptics. <span className="thin">Answered like one.</span></h2>
+            <span className="eyebrow">Questions, answered simply</span>
+            <h2>Wondering something? <span className="thin">Start here.</span></h2>
           </div>
           <div className="faq reveal">
             {FAQS.map((f, i) => {
@@ -767,6 +815,9 @@ socket.emit('bridge-message', base64([
               );
             })}
           </div>
+          <p className="reveal" style={{ marginTop: 18, fontSize: 13.5, color: 'var(--faint)' }}>
+            Technical and want packet-level proof? Expand the 🤓 sections above — keys, wire format and the full permission ledger are all there.
+          </p>
         </div>
       </section>
 
@@ -779,7 +830,7 @@ socket.emit('bridge-message', base64([
             </div>
             <span className="eyebrow" style={{ justifyContent: 'center' }}>Stop emailing yourself</span>
             <h2>Copy on your phone.<br />Paste on your PC.</h2>
-            <p>Free during v1. No account. Your network, your data, your two minutes of setup.</p>
+            <p>Free during v1. No account. Two minutes to set up, then you’ll forget it’s even there.</p>
             <div className="hero-ctas" style={{ marginTop: 0 }}>
               <a className="btn btn-specular" href="/download"><span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows</a>
               <a className="btn btn-ghost" href="/download"><span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android</a>
@@ -794,34 +845,34 @@ socket.emit('bridge-message', base64([
           <div className="foot-grid">
             <div className="foot-brand">
               <a className="nav-logo" href="/" style={{ textDecoration: 'none' }}><Logo /><span>Bridge</span></a>
-              <p>Local-first continuity for Android & Windows. Your LAN is the cloud.</p>
-              <p className="mono" style={{ fontSize: 11.5 }}>v{SITE.appVersion} · AES-256-GCM · LAN-only</p>
+              <p>Your phone and PC, finally in sync. Private by design.</p>
+              <p className="mono" style={{ fontSize: 11.5 }}>v{SITE.appVersion} · free during v1</p>
             </div>
             <div className="foot-col">
               <h4>Product</h4>
               <a href="/features">Features</a>
-              <a href="/tour">Tour</a>
-              <a href="/setup">Setup</a>
-              <a href="/updates">Changelog</a>
+              <a href="/setup">How it works</a>
+              <a href="/love">Reviews</a>
+              <a href="/updates">What’s new</a>
             </div>
             <div className="foot-col">
-              <h4>Trust</h4>
-              <a href="/security">Security</a>
+              <h4>For geeks</h4>
+              <a href="/security">Technical proof</a>
               <a href="/permissions">Permissions</a>
               <a href="/compare">Comparison</a>
               <a href="/faq">FAQ</a>
             </div>
             <div className="foot-col">
               <h4>Get</h4>
-              <a href={SITE.windowsDownloadUrl}>Windows agent</a>
+              <a href={SITE.windowsDownloadUrl}>Windows app</a>
               <a href={SITE.androidDownloadUrl}>Android app</a>
-              <a href="/download">Releases</a>
+              <a href="/download">All downloads</a>
               <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
             </div>
           </div>
           <div className="foot-base">
             <span>© 2026 Bridge. Not open source — yet.</span>
-            <span><a href="/privacy" style={{ textDecoration: 'none' }}>Privacy Policy</a> · <span className="live">●</span> all systems local</span>
+            <span><a href="/privacy" style={{ textDecoration: 'none' }}>Privacy Policy</a> · <span className="live">●</span> your Wi-Fi is the cloud</span>
           </div>
         </div>
       </footer>
@@ -831,7 +882,7 @@ socket.emit('bridge-message', base64([
 
 /* ---------------- router ---------------- */
 
-const SECTIONS = ['story', 'features', 'tour', 'setup', 'security', 'permissions', 'compare', 'download', 'updates', 'faq'];
+const SECTIONS = ['story', 'moments', 'features', 'tour', 'setup', 'love', 'security', 'permissions', 'compare', 'download', 'updates', 'faq'];
 
 export default function App() {
   return (
