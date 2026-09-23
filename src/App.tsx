@@ -255,9 +255,9 @@ function Logo({ size = 26 }: { size?: number }) {
 const TOUR_VIDEOS = [
   '/videos/clipboard.mp4',
   '/videos/file.mp4',
-  '/videos/texts.mp4',
-  '/videos/remote.mp4',
   '/videos/camera.mp4',
+  '/videos/remote.mp4',
+  '/videos/texts.mp4',
 ];
 
 function TourVideo({ src, children }: { src: string; children: React.ReactNode }) {
@@ -415,7 +415,7 @@ function Home({ section }: { section?: string }) {
             {[0, 1].map((k) => (
               <span key={k} style={{ display: 'contents' }}>
                 <span><b>copy-paste</b> links + screenshots</span>
-                <span>send <b>files in one tap</b></span>
+                <span>send <b>files either way</b></span>
                 <span>reply to <b>texts from PC</b></span>
                 <span>phone as <b>remote + keyboard</b></span>
                 <span>phone as <b>HD webcam</b></span>
@@ -497,7 +497,7 @@ function Home({ section }: { section?: string }) {
             <div className="bcard reveal">
               <div className="icon"><IconRemote size={20} /></div>
               <h3>Phone as remote</h3>
-              <p>Trackpad with smooth two-finger scroll, left and right click, keyboard, media keys and volume. Open it from the phone — or trigger it from the PC dashboard.</p>
+              <p>Trackpad with smooth two-finger scroll, left and right click, keyboard, media keys and volume. Start it from your phone — or open it with one click on the PC.</p>
               <div className="foot"><span className="tick">→</span> mouse + keyboard + clicker</div>
             </div>
             <div className="bcard reveal">
@@ -537,7 +537,7 @@ function Home({ section }: { section?: string }) {
             <h2>A normal day <span className="thin">with Bridge on.</span></h2>
           </div>
           <div className="dock reveal">
-            {['Clipboard', 'Files', 'Texts', 'Remote', 'Camera'].map((t, i) => (
+            {['Clipboard', 'Files', 'Camera', 'Remote', 'Texts'].map((t, i) => (
               <button key={t} type="button" className={tour === i ? 'active' : ''} onClick={() => setTour(i)}>{t}</button>
             ))}
           </div>
@@ -548,9 +548,9 @@ function Home({ section }: { section?: string }) {
                   <h3><span className="n">01 / CLIPBOARD</span>Copy here. Paste there. Either way.</h3>
                   <p>The flow your hands learn in minutes. Links, screenshots, IDs, notes — phone to PC and PC to phone, with history on both sides.</p>
                   <ul className="tour-list">
-                    <li>Copy on either device, in any app</li>
-                    <li>Tap Sync Now on the phone (Android needs it)</li>
-                    <li>Paste on the other — Ctrl+V or tap Paste</li>
+                    <li>Copy something on either device, in any app</li>
+                    <li>Tap Sync Now once on the phone</li>
+                    <li>Paste on the other side — Ctrl+V or tap Paste</li>
                   </ul>
                 </div>
                 <div className="tour-visual">
@@ -585,18 +585,26 @@ function Home({ section }: { section?: string }) {
             {tour === 2 && (
               <>
                 <div>
-                  <h3><span className="n">03 / TEXTS</span>Your chats, at full typing speed.</h3>
-                  <p>Messages arrive on Windows the moment they hit your phone. Reply inline, dismiss the noise.</p>
+                  <h3><span className="n">03 / CAMERA</span>Your meetings just got a better camera.</h3>
+                  <p>Your phone becomes a wireless HD webcam — pick it in Meet, Zoom or Teams like any other camera. Same desk, same light, no contest.</p>
                   <ul className="tour-list">
-                    <li>WhatsApp, Telegram, SMS + any notifying app</li>
-                    <li>Inline reply and dismiss from Windows</li>
-                    <li>Revoke access any time — mirroring stops</li>
+                    <li>Shows up as “Bridge Phone Camera” everywhere</li>
+                    <li>Notebook text and small details stay readable</li>
+                    <li>Front or back lens, switch in one tap</li>
                   </ul>
                 </div>
-                <div className="tour-visual">
+                <div className="tour-visual cam-demo">
                   <TourVideo src={TOUR_VIDEOS[2]}>
-                    <div className="notif-row"><div className="avatar">A</div><div><b>WhatsApp · Alice</b><small>Send the Figma link when you're at your desk?</small></div></div>
-                    <div className="notif-row"><div className="avatar tg">T</div><div style={{ flex: 1 }}><b>Telegram · Design group</b><small>Final mock is in Figma — review?</small><div className="reply"><input defaultValue="Looking now" readOnly /><button>Send</button></div></div></div>
+                    <div className="cam-view high">
+                      <div className="cam-scene">
+                        <div className="cam-desk" />
+                        <div className="cam-plant" />
+                        <div className="cam-mug" />
+                        <div className="cam-note">desk feed</div>
+                      </div>
+                      <div className="cam-rec"><i />Live · 1080p · private link</div>
+                    </div>
+                    <div className="mono" style={{ fontSize: 12, color: '#6b6b76', marginTop: 10 }}>Wireless HD · nothing uploaded</div>
                   </TourVideo>
                 </div>
               </>
@@ -624,26 +632,18 @@ function Home({ section }: { section?: string }) {
             {tour === 4 && (
               <>
                 <div>
-                  <h3><span className="n">05 / CAMERA</span>Desk demos, interviews, classes.</h3>
-                  <p>Prop the phone, point it at your notebook or components. Your PC shows a sharp feed — no face required.</p>
+                  <h3><span className="n">05 / TEXTS</span>Your chats, at full typing speed.</h3>
+                  <p>Messages arrive on Windows the moment they hit your phone. Reply inline, dismiss the noise — the phone never leaves your pocket.</p>
                   <ul className="tour-list">
-                    <li>Rear camera sharpness for text + work</li>
-                    <li>Find-my-phone ring + live battery alongside</li>
-                    <li>Nothing recorded, nothing uploaded</li>
+                    <li>WhatsApp, Telegram, SMS + any notifying app</li>
+                    <li>Inline reply and dismiss from Windows</li>
+                    <li>Turn it off any time — mirroring stops dead</li>
                   </ul>
                 </div>
-                <div className="tour-visual cam-demo">
+                <div className="tour-visual">
                   <TourVideo src={TOUR_VIDEOS[4]}>
-                    <div className="cam-view high">
-                      <div className="cam-scene">
-                        <div className="cam-desk" />
-                        <div className="cam-plant" />
-                        <div className="cam-mug" />
-                        <div className="cam-note">desk feed</div>
-                      </div>
-                      <div className="cam-rec"><i />Live · 1080p · private link</div>
-                    </div>
-                    <div className="mono" style={{ fontSize: 12, color: '#6b6b76', marginTop: 10 }}>Battery 78% · not charging</div>
+                    <div className="notif-row"><div className="avatar">A</div><div><b>WhatsApp · Alice</b><small>Send the Figma link when you're at your desk?</small></div></div>
+                    <div className="notif-row"><div className="avatar tg">T</div><div style={{ flex: 1 }}><b>Telegram · Design group</b><small>Final mock is in Figma — review?</small><div className="reply"><input defaultValue="Looking now" readOnly /><button>Send</button></div></div></div>
                   </TourVideo>
                 </div>
               </>
@@ -708,7 +708,7 @@ function Home({ section }: { section?: string }) {
           <div className="assurance">
             <div className="assure reveal" style={{ gridColumn: 'span 1' }}><span className="assure-icon"><IconHome size={22} /></span><b>Stays in the room</b><p>Phone to PC over your own Wi-Fi. Turn off the internet and it still works.</p></div>
             <div className="assure reveal" style={{ gridColumn: 'span 1' }}><span className="assure-icon"><IconShield size={22} /></span><b>No account, no tracking</b><p>No sign-up, no ads, no analytics. Nothing collected, nothing to leak.</p></div>
-            <div className="assure reveal" style={{ gridColumn: 'span 1' }}><span className="assure-icon"><IconKey size={22} /></span><b>Locked, and undoable</b><p>Connected by a one-time scan. Remove a device or permission and it stops instantly.</p></div>
+            <div className="assure reveal" style={{ gridColumn: 'span 1' }}><span className="assure-icon"><IconKey size={22} /></span><b>Locked, and easy to undo</b><p>Connected by a one-time scan. Remove a device or switch off a permission and it stops instantly.</p></div>
           </div>
           <details className="geek reveal">
             <summary><span>Technical proof</span><span className="geek-hint">packets, keys, wire format <IconChevron size={12} /></span></summary>
@@ -827,9 +827,9 @@ socket.emit('bridge-message', base64([
             <div className="dl-card featured reveal">
               <div className="os"><div className="glyph win"><WindowsGlyph size={24} /></div><div><h3>For Windows</h3><div className="file mono">Windows 10 / 11 · 64-bit</div></div></div>
               <ul>
-                <li>Shows the code to connect your phone</li>
+                <li>Shows the code that connects your phone</li>
                 <li>Clipboard history + reply to texts</li>
-                <li>Receives files, camera, remote</li>
+                <li>Home for your files, camera and remote</li>
               </ul>
               <a className="btn btn-specular" href={SITE.windowsDownloadUrl} download={SITE.windowsInstaller} style={{ width: '100%', justifyContent: 'center' }}>Download for Windows · {SITE.windowsSize}</a>
               <details className="geek small">
@@ -840,9 +840,9 @@ socket.emit('bridge-message', base64([
             <div className="dl-card reveal">
               <div className="os"><div className="glyph droid"><AndroidGlyph size={24} /></div><div><h3>For Android</h3><div className="file mono">Android 8.0+ · v{SITE.appVersion}</div></div></div>
               <ul>
-                <li>One-tap copy to PC</li>
-                <li>Share any photo or file to PC</li>
-                <li>Remote, camera, find-my-phone</li>
+                <li>Copy anything to your PC in one tap</li>
+                <li>Share any photo or file to your PC</li>
+                <li>Remote, camera and ring-my-phone included</li>
               </ul>
               <a className="btn btn-ghost" href={SITE.androidDownloadUrl} download={SITE.androidApk} style={{ width: '100%', justifyContent: 'center' }}>Download for Android · {SITE.androidSize}</a>
               <details className="geek small">
