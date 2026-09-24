@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { SITE, shortHash } from './config';
+import { SITE } from './config';
 import Privacy from './Privacy';
 
 /* ---------------- hooks ---------------- */
@@ -832,10 +832,6 @@ socket.emit('bridge-message', base64([
                 <li>Home for your files, camera and remote</li>
               </ul>
               <a className="btn btn-specular" href={SITE.windowsDownloadUrl} download={SITE.windowsInstaller} style={{ width: '100%', justifyContent: 'center' }}>Download for Windows · {SITE.windowsSize}</a>
-              <details className="geek small">
-                <summary>Verify file · SHA-256</summary>
-                <div className="geek-body mono" style={{ fontSize: 11.5 }} title={SITE.windowsSha256}>{SITE.windowsInstaller}<br />{shortHash(SITE.windowsSha256)} · {SITE.windowsSha256}</div>
-              </details>
             </div>
             <div className="dl-card reveal">
               <div className="os"><div className="glyph droid"><AndroidGlyph size={24} /></div><div><h3>For Android</h3><div className="file mono">Android 8.0+ · v{SITE.appVersion}</div></div></div>
@@ -845,10 +841,6 @@ socket.emit('bridge-message', base64([
                 <li>Remote, camera and ring-my-phone included</li>
               </ul>
               <a className="btn btn-ghost" href={SITE.androidDownloadUrl} download={SITE.androidApk} style={{ width: '100%', justifyContent: 'center' }}>Download for Android · {SITE.androidSize}</a>
-              <details className="geek small">
-                <summary>Verify file · SHA-256</summary>
-                <div className="geek-body mono" style={{ fontSize: 11.5 }} title={SITE.androidSha256}>{SITE.androidApk}<br />{shortHash(SITE.androidSha256)} · {SITE.androidSha256}</div>
-              </details>
             </div>
           </div>
           <div className="dl-note reveal">
