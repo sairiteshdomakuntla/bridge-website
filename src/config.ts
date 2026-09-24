@@ -1,4 +1,44 @@
 /**
+ * Launch mode switch — the ONLY value you need to change to go public.
+ *
+ *   LAUNCH_MODE = "waitlist"  → install/download CTAs become a waitlist signup.
+ *   LAUNCH_MODE = "public"    → original download/install experience, untouched.
+ *
+ * Can also be set without code changes via the Vite env var:
+ *   VITE_LAUNCH_MODE=public npm run build
+ */
+export type LaunchMode = 'waitlist' | 'public';
+
+function resolveLaunchMode(): LaunchMode {
+  const fromEnv =
+    typeof import.meta !== 'undefined'
+      ? (import.meta.env?.VITE_LAUNCH_MODE as string | undefined)
+      : undefined;
+  const raw = (fromEnv ?? 'waitlist').toLowerCase();
+  return raw === 'public' ? 'public' : 'waitlist';
+}
+
+export const LAUNCH_MODE: LaunchMode = resolveLaunchMode();
+
+/** Convenience flag for conditional rendering. */
+export const IS_WAITLIST: boolean = LAUNCH_MODE === 'waitlist';
+
+/**
+ * Optional waitlist collection endpoint (POST JSON { name, email, platform, createdAt }).
+ * Empty by default — signups are kept in the browser (localStorage) so no
+ * extra infrastructure is required. Set VITE_WAITLIST_ENDPOINT to a form
+ * backend / serverless function URL to also forward signups there.
+ */
+export const WAITLIST_ENDPOINT: string =
+  (typeof import.meta !== 'undefined'
+    ? (import.meta.env?.VITE_WAITLIST_ENDPOINT as string | undefined)
+    : undefined) ||
+  'https://script.google.com/macros/s/AKfycbz2MlNb8dCgNV6kB-8oSoptKzG8SPZbC05x36tcmP9royO5VG8DgmJ6PhZoB6csGWN3Dw/exec';
+
+/** localStorage key used when no endpoint (or in addition to it). */
+export const WAITLIST_STORAGE_KEY = 'bridge-waitlist';
+
+/**
  * Download wiring. Binaries are served straight from this site
  * (public/downloads/) so users get one-click installs.
  * SHA-256 hashes below are of the exact files being served —

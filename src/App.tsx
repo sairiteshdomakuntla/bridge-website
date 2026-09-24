@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { SITE } from './config';
+import { IS_WAITLIST, SITE } from './config';
 import Privacy from './Privacy';
+import WaitlistForm from './WaitlistForm';
 
 /* ---------------- hooks ---------------- */
 
@@ -194,20 +195,11 @@ function IconHome({ size = 20 }: { size?: number }) {
 function IconKey({ size = 20 }: { size?: number }) {
   return <Icon size={size}><circle cx="8" cy="15.5" r="4.5" /><path d="m11.5 12.5 8-8M17 5l2.5 2.5M14.5 7.5 17 10" /></Icon>;
 }
-function IconPhone({ size = 20 }: { size?: number }) {
-  return <Icon size={size}><rect x="7" y="2.5" width="10" height="19" rx="2.5" /><path d="M11 18.5h2" /></Icon>;
-}
-function IconLaptop({ size = 20 }: { size?: number }) {
-  return <Icon size={size}><rect x="4" y="4.5" width="16" height="11" rx="2" /><path d="M2.5 19.5h19" /></Icon>;
-}
 function IconDoc({ size = 20 }: { size?: number }) {
   return <Icon size={size}><path d="M6 2.5h8L19 8v13.5H6V2.5Z" /><path d="M13.5 2.5V8H19" /><path d="M9 13h6M9 16.5h6" /></Icon>;
 }
 function IconBolt({ size = 20 }: { size?: number }) {
   return <Icon size={size}><path d="M13 2.5 4.5 13.5H11L10 21.5 19.5 10H13l0-7.5Z" /></Icon>;
-}
-function IconCheck({ size = 14 }: { size?: number }) {
-  return <Icon size={size}><path d="m4.5 12.5 5 5 10-11" /></Icon>;
 }
 function IconChevron({ size = 14 }: { size?: number }) {
   return <Icon size={size}><path d="m6 9 6 6 6-6" /></Icon>;
@@ -277,7 +269,85 @@ function TourVideo({ src, children }: { src: string; children: React.ReactNode }
   );
 }
 
+/* ---------------- download (public-mode implementation, kept intact) ---------------- */
+
+/**
+ * Original public download/install UI. Rendered verbatim when
+ * LAUNCH_MODE === "public". Waitlist mode renders <WaitlistForm /> instead —
+ * this component is never deleted or rewritten, only gated.
+ */
+function DownloadGrid() {
+  return (
+    <>
+      <div className="dl-grid">
+        <div className="dl-card featured reveal">
+          <div className="os"><div className="glyph win"><WindowsGlyph size={24} /></div><div><h3>For Windows</h3><div className="file mono">Windows 10 / 11 · 64-bit</div></div></div>
+          <ul>
+            <li>Shows the code that connects your phone</li>
+            <li>Clipboard history + reply to texts</li>
+            <li>Home for your files, camera and remote</li>
+          </ul>
+          <a className="btn btn-specular" href={SITE.windowsDownloadUrl} download={SITE.windowsInstaller} style={{ width: '100%', justifyContent: 'center' }}>Download for Windows · {SITE.windowsSize}</a>
+        </div>
+        <div className="dl-card reveal">
+          <div className="os"><div className="glyph droid"><AndroidGlyph size={24} /></div><div><h3>For Android</h3><div className="file mono">Android 8.0+ · v{SITE.appVersion}</div></div></div>
+          <ul>
+            <li>Copy anything to your PC in one tap</li>
+            <li>Share any photo or file to your PC</li>
+            <li>Remote, camera and ring-my-phone included</li>
+          </ul>
+          <a className="btn btn-ghost" href={SITE.androidDownloadUrl} download={SITE.androidApk} style={{ width: '100%', justifyContent: 'center' }}>Download for Android · {SITE.androidSize}</a>
+        </div>
+      </div>
+      <div className="dl-note reveal">
+        <b>First time? Read this once:</b>
+        <ol>
+          <li><b>Windows asks “Run anyway?”</b> — normal for new apps. Click “More info → Run anyway”.</li>
+          <li><b>Firewall asks about private networks</b> — click Allow, or your phone can’t find the PC.</li>
+          <li><b>Android asks to allow installs</b> — allow once for your browser, then install.</li>
+          <li><b>Connect:</b> open Bridge on PC, scan the code with your phone. Done.</li>
+        </ol>
+      </div>
+    </>
+  );
+}
+
+/** Waitlist-mode replacement for the download grid. Reuses .dl-card styling. */
+function WaitlistGrid() {
+  return (
+    <>
+      <div className="dl-grid">
+        <WaitlistForm />
+        <div className="dl-card reveal in">
+          <div className="os"><div className="glyph droid"><IconBell size={24} /></div><div><h3>How early access works</h3><div className="file mono">small batches · invite by email</div></div></div>
+          <ul className="wl-side-list">
+            <li>Join the waitlist with your email — 20 seconds</li>
+            <li>We send Windows + Android install links when your spot opens</li>
+            <li>Install both apps, join the same Wi-Fi, scan once</li>
+            <li>Free during v1 · no account · leave any time</li>
+          </ul>
+        </div>
+      </div>
+      <div className="dl-note reveal in">
+        <b>Why a waitlist?</b> Bridge pairs your real phone and PC over your Wi-Fi — we’re
+        onboarding gradually so every early user gets a smooth setup. Your email is only
+        used for your invite.
+      </div>
+    </>
+  );
+}
+
 /* ---------------- main ---------------- */
+
+/**
+ * Canonical signup path per launch mode. Waitlist mode lives at /waitlist
+ * (not /download — there is nothing to download yet); public mode keeps
+ * the original /download URL. Use this for every CTA href.
+ */
+const SIGNUP_PATH = IS_WAITLIST ? '/waitlist' : '/download';
+
+/** Section id of the signup block, matching SIGNUP_PATH. */
+const SIGNUP_SECTION = IS_WAITLIST ? 'waitlist' : 'download';
 
 function Home({ section }: { section?: string }) {
   useReveal();
@@ -287,6 +357,12 @@ function Home({ section }: { section?: string }) {
   const [tour, setTour] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const glow = useRef<HTMLDivElement>(null);
+
+  // Waitlist mode is a focused pre-launch page: drop the FAQ that assumes
+  // the reader already has the installer ("My PC warned me").
+  const VISIBLE_FAQS = IS_WAITLIST
+    ? FAQS.filter((f) => !f.q.startsWith('Is Bridge safe to install'))
+    : FAQS;
 
   useEffect(() => {
     const move = (e: MouseEvent) => {
@@ -314,11 +390,11 @@ function Home({ section }: { section?: string }) {
             <a href="/features">Features</a>
             <a href="/tour">Tour</a>
             <a href="/setup">How it works</a>
-            <a href="/love">Reviews</a>
+            {!IS_WAITLIST && <a href="/love">Reviews</a>}
             <a href="/faq">FAQ</a>
-            <a href="/download">Download</a>
+            <a href={SIGNUP_PATH}>{IS_WAITLIST ? 'Waitlist' : 'Download'}</a>
           </div>
-          <a className="nav-cta" href="/download">Get Bridge — free</a>
+          <a className="nav-cta" href={SIGNUP_PATH}>{IS_WAITLIST ? 'Join waitlist' : 'Get Bridge — free'}</a>
           <button className="nav-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
             {menuOpen ? '✕' : '☰'}
           </button>
@@ -329,9 +405,9 @@ function Home({ section }: { section?: string }) {
           <a href="/features">Features</a>
           <a href="/tour">Tour</a>
           <a href="/setup">How it works</a>
-          <a href="/love">Reviews</a>
+          {!IS_WAITLIST && <a href="/love">Reviews</a>}
           <a href="/faq">FAQ</a>
-          <a href="/download">Download</a>
+          <a href={SIGNUP_PATH}>{IS_WAITLIST ? 'Waitlist' : 'Download'}</a>
         </div>
       )}
 
@@ -343,7 +419,7 @@ function Home({ section }: { section?: string }) {
           <div className="hero-badge">
             <Logo size={20} />
             For Android + Windows
-            <span className="ver">v{SITE.appVersion} · free</span>
+            <span className="ver">{IS_WAITLIST ? 'Early access · waitlist open' : `v${SITE.appVersion} · free`}</span>
           </div>
           <h1>
             Your phone and PC,
@@ -360,53 +436,31 @@ function Home({ section }: { section?: string }) {
             <strong>no cables, no accounts, no uploading to the internet.</strong>
           </p>
           <div className="hero-ctas">
-            <a className="btn btn-specular" href="/download">
-              <span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows
-            </a>
-            <a className="btn btn-ghost" href="/download">
-              <span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android
-            </a>
+            {IS_WAITLIST ? (
+              <>
+                <a className="btn btn-specular" href={SIGNUP_PATH}>
+                  <span className="os-glyph"><IconBell size={14} /></span> Join the waitlist
+                </a>
+                <a className="btn btn-ghost" href="/setup">
+                  See how it works
+                </a>
+              </>
+            ) : (
+              <>
+                <a className="btn btn-specular" href={SIGNUP_PATH}>
+                  <span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows
+                </a>
+                <a className="btn btn-ghost" href={SIGNUP_PATH}>
+                  <span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android
+                </a>
+              </>
+            )}
           </div>
           <div className="hero-trust">
             <span className="trust-chip"><i />No account needed</span>
             <span className="trust-chip"><i />Works on your home Wi-Fi</span>
             <span className="trust-chip"><i />Private by design</span>
             <span className="trust-chip"><i />Setup in 2 minutes</span>
-          </div>
-
-          {/* product visual — real-world examples, no jargon */}
-          <div className="stage">
-            <div className="magic-flow reveal in">
-              <div className="magic-card">
-                <div className="magic-icon"><IconPhone size={22} /></div>
-                <b>Copy on either side</b>
-                <small>Phone or PC — link, image, text</small>
-                <div className="magic-bubble">figma.com/design/Site-Revamp?node-id=4128…</div>
-              </div>
-              <div className="magic-arrow" aria-hidden="true">
-                <span>⇄</span>
-                <small>both ways</small>
-              </div>
-              <div className="magic-card">
-                <div className="magic-icon"><IconLaptop size={22} /></div>
-                <b>Paste on the other</b>
-                <small>Ctrl+V on PC, tap Paste on phone</small>
-                <div className="magic-bubble pc"><span className="tick"><IconCheck size={12} /></span> Pasted — opens directly</div>
-              </div>
-              <div className="magic-arrow" aria-hidden="true">
-                <span>→</span>
-                <small>reply too</small>
-              </div>
-              <div className="magic-card">
-                <div className="magic-icon"><IconChat size={22} /></div>
-                <b>Reply from your keyboard</b>
-                <small>Full speed, phone stays put</small>
-                <div className="magic-bubble reply">On it — sending the file now</div>
-              </div>
-            </div>
-            <div className="stage-caption">
-              <span><b>Both directions</b> · same Wi-Fi · nothing uploaded to the internet</span>
-            </div>
           </div>
         </div>
 
@@ -513,6 +567,8 @@ function Home({ section }: { section?: string }) {
               <div className="foot"><span className="tick">→</span> rings loud, even on silent</div>
             </div>
           </div>
+          {/* Technical details live in public mode only — waitlist page stays non-technical. */}
+          {!IS_WAITLIST && (
           <details className="geek reveal">
             <summary><span>Technical details</span><span className="geek-hint">implementation notes <IconChevron size={12} /></span></summary>
             <div className="geek-body">
@@ -526,6 +582,7 @@ function Home({ section }: { section?: string }) {
               </ul>
             </div>
           </details>
+          )}
         </div>
       </section>
 
@@ -661,20 +718,23 @@ function Home({ section }: { section?: string }) {
             <p>No accounts, no cables, no tech skills needed. If both devices share Wi-Fi, you’re done.</p>
           </div>
           <div className="steps">
-            <div className="step reveal"><div className="num">1</div><h3>Install both apps</h3><p>One on your Windows PC, one on your Android phone. Links in <a href="/download" style={{ color: '#c4d3ff' }}>Download</a> below.</p></div>
+            <div className="step reveal"><div className="num">1</div><h3>Install both apps</h3><p>{IS_WAITLIST ? <>Join the <a href={SIGNUP_PATH} style={{ color: '#c4d3ff' }}>waitlist</a> — we’ll email your Windows + Android links when your spot opens.</> : <>One on your Windows PC, one on your Android phone. Links in <a href={SIGNUP_PATH} style={{ color: '#c4d3ff' }}>Download</a> below.</>}</p></div>
             <div className="step reveal"><div className="num">2</div><h3>Join the same Wi-Fi</h3><p>Home, office, hotspot — as long as phone and PC are on the same network, Bridge finds its way.</p></div>
             <div className="step reveal"><div className="num">3</div><h3>Scan the code on your PC</h3><p>Your PC shows a code. Point your phone at it. Connected — everything is private from here on.</p></div>
           </div>
+          {!IS_WAITLIST && (
           <details className="geek reveal">
             <summary><span>What happens under the hood</span><span className="geek-hint">for the curious <IconChevron size={12} /></span></summary>
             <div className="geek-body">
               <p>The QR encodes your PC’s address plus a fresh 256-bit secret. After one handshake, every message is end-to-end encrypted (AES-256-GCM), keys live in the OS keychain on both sides, and Bridge auto-picks the right network adapter while ignoring virtual ones.</p>
             </div>
           </details>
+          )}
         </div>
       </section>
 
-      {/* ---------- love ---------- */}
+      {/* ---------- love (public only — no reviews before launch) ---------- */}
+      {!IS_WAITLIST && (
       <section className="block" id="love">
         <div className="wrap">
           <div className="sec-head reveal">
@@ -696,6 +756,7 @@ function Home({ section }: { section?: string }) {
           </div>
         </div>
       </section>
+      )}
 
       {/* ---------- security ---------- */}
       <section className="block" id="security">
@@ -710,40 +771,6 @@ function Home({ section }: { section?: string }) {
             <div className="assure reveal" style={{ gridColumn: 'span 1' }}><span className="assure-icon"><IconShield size={22} /></span><b>No account, no tracking</b><p>No sign-up, no ads, no analytics. Nothing collected, nothing to leak.</p></div>
             <div className="assure reveal" style={{ gridColumn: 'span 1' }}><span className="assure-icon"><IconKey size={22} /></span><b>Locked, and easy to undo</b><p>Connected by a one-time scan. Remove a device or switch off a permission and it stops instantly.</p></div>
           </div>
-          <details className="geek reveal">
-            <summary><span>Technical proof</span><span className="geek-hint">packets, keys, wire format <IconChevron size={12} /></span></summary>
-            <div className="geek-body">
-              <div className="sec-grid">
-                <div className="diagram reveal">
-                  <div className="node"><div className="glyph"><IconPhone size={18} /></div><div><b>Android app</b><small>flutter_secure_storage · Keystore</small></div></div>
-                  <div className="link">AES-256-GCM · bridge-message · your Wi-Fi only</div>
-                  <div className="node"><div className="glyph" style={{ color: '#8fb0ff' }}><WindowsGlyph size={18} /></div><div><b>Windows agent</b><small>Electron safeStorage · DPAPI</small></div></div>
-                  <div className="blocked"><span className="tick">—</span><span><b>No cloud.</b> No relay, no account server, no analytics endpoint. Offline router? Still works.</span></div>
-                </div>
-                <div className="codeblock reveal">
-                  <div className="chead"><span style={{ color: '#fb7185' }}>●</span><span style={{ color: '#fbbf24' }}>●</span><span style={{ color: '#5eead4' }}>●</span>&nbsp; every packet on the wire</div>
-                  <pre>{`// one Socket.IO event, always encrypted
-socket.emit('bridge-message', base64([
-  nonce      // 12 random bytes
-  ciphertext // your JSON envelope
-  tag        // 16-byte GCM auth tag
-]))
-
-// inside, after decrypt:
-{ eventId, type, origin, timestamp, payload }
-// types: clipboard · file · notification
-//        remote-input · device · camera-signal`}</pre>
-                </div>
-              </div>
-              <div className="honest reveal" style={{ marginTop: 14 }}>
-                <span className="flag"><IconShield size={20} /></span>
-                <div>
-                  <h3>One honest limitation: why clipboard needs one tap</h3>
-                  <p>Since Android 10, only the app you are actively using can see what you copied. No app can read it silently in the background. So you copy, tap <b>Sync Now</b>, paste. One tap, and it is Android protecting you — not us being lazy.</p>
-                </div>
-              </div>
-            </div>
-          </details>
         </div>
       </section>
 
@@ -786,7 +813,8 @@ socket.emit('bridge-message', base64([
         </div>
       </section>
 
-      {/* ---------- compare ---------- */}
+      {/* ---------- compare (public only — pre-launch page stays focused) ---------- */}
+      {!IS_WAITLIST && (
       <section className="block" id="compare">
         <div className="wrap">
           <div className="sec-head reveal">
@@ -814,44 +842,27 @@ socket.emit('bridge-message', base64([
           <p className="compare-note reveal">Phone Link needs an account and the internet. KDE Connect is powerful but fiddly. Bridge is the simple one: paired in seconds, with the extras neither of them bundles.</p>
         </div>
       </section>
+      )}
 
-      {/* ---------- download ---------- */}
-      <section className="block" id="download">
+      {/* ---------- download / waitlist ---------- */}
+      <section className="block" id={SIGNUP_SECTION}>
         <div className="wrap">
           <div className="sec-head reveal">
-            <span className="eyebrow">Get Bridge · v{SITE.appVersion} · free</span>
-            <h2>Two installs. <span className="thin">Two minutes.</span></h2>
-            <p>You need <b>both</b> — one on your PC, one on your phone — on the same Wi-Fi.</p>
+            {IS_WAITLIST ? (
+              <>
+                <span className="eyebrow">Early access · waitlist open</span>
+                <h2>Get early access. <span className="thin">Join the waitlist.</span></h2>
+                <p>Bridge is currently accepting early users in small batches — leave your email and we’ll send your install links.</p>
+              </>
+            ) : (
+              <>
+                <span className="eyebrow">Get Bridge · v{SITE.appVersion} · free</span>
+                <h2>Two installs. <span className="thin">Two minutes.</span></h2>
+                <p>You need <b>both</b> — one on your PC, one on your phone — on the same Wi-Fi.</p>
+              </>
+            )}
           </div>
-          <div className="dl-grid">
-            <div className="dl-card featured reveal">
-              <div className="os"><div className="glyph win"><WindowsGlyph size={24} /></div><div><h3>For Windows</h3><div className="file mono">Windows 10 / 11 · 64-bit</div></div></div>
-              <ul>
-                <li>Shows the code that connects your phone</li>
-                <li>Clipboard history + reply to texts</li>
-                <li>Home for your files, camera and remote</li>
-              </ul>
-              <a className="btn btn-specular" href={SITE.windowsDownloadUrl} download={SITE.windowsInstaller} style={{ width: '100%', justifyContent: 'center' }}>Download for Windows · {SITE.windowsSize}</a>
-            </div>
-            <div className="dl-card reveal">
-              <div className="os"><div className="glyph droid"><AndroidGlyph size={24} /></div><div><h3>For Android</h3><div className="file mono">Android 8.0+ · v{SITE.appVersion}</div></div></div>
-              <ul>
-                <li>Copy anything to your PC in one tap</li>
-                <li>Share any photo or file to your PC</li>
-                <li>Remote, camera and ring-my-phone included</li>
-              </ul>
-              <a className="btn btn-ghost" href={SITE.androidDownloadUrl} download={SITE.androidApk} style={{ width: '100%', justifyContent: 'center' }}>Download for Android · {SITE.androidSize}</a>
-            </div>
-          </div>
-          <div className="dl-note reveal">
-            <b>First time? Read this once:</b>
-            <ol>
-              <li><b>Windows asks “Run anyway?”</b> — normal for new apps. Click “More info → Run anyway”.</li>
-              <li><b>Firewall asks about private networks</b> — click Allow, or your phone can’t find the PC.</li>
-              <li><b>Android asks to allow installs</b> — allow once for your browser, then install.</li>
-              <li><b>Connect:</b> open Bridge on PC, scan the code with your phone. Done.</li>
-            </ol>
-          </div>
+          {IS_WAITLIST ? <WaitlistGrid /> : <DownloadGrid />}
         </div>
       </section>
 
@@ -863,7 +874,7 @@ socket.emit('bridge-message', base64([
             <h2>Wondering something? <span className="thin">Start here.</span></h2>
           </div>
           <div className="faq reveal">
-            {FAQS.map((f, i) => {
+            {VISIBLE_FAQS.map((f, i) => {
               const open = openFaq === i;
               return (
                 <div className={`faq-item${open ? ' open' : ''}`} key={f.q}>
@@ -886,7 +897,11 @@ socket.emit('bridge-message', base64([
             })}
           </div>
           <p className="reveal" style={{ marginTop: 18, fontSize: 13.5, color: 'var(--faint)' }}>
-            Technical and want packet-level proof? Expand the Technical details sections above — keys, wire format and the full permission ledger are all there.
+            {IS_WAITLIST ? (
+              <>More questions? Reach us at <a href={`mailto:${SITE.supportEmail}`} style={{ color: '#c4d3ff' }}>{SITE.supportEmail}</a> — we read everything.</>
+            ) : (
+              <>Technical and want packet-level proof? Expand the Technical details sections above — keys, wire format and the full permission ledger are all there.</>
+            )}
           </p>
         </div>
       </section>
@@ -898,12 +913,18 @@ socket.emit('bridge-message', base64([
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 22 }}>
               <Logo size={56} />
             </div>
-            <span className="eyebrow" style={{ justifyContent: 'center' }}>Stop WhatsApping yourself</span>
-            <h2>Copy on one device.<br />Paste on the other.</h2>
-            <p>Free during v1. No account. Two minutes to set up, then you’ll forget it’s even there.</p>
+            <span className="eyebrow" style={{ justifyContent: 'center' }}>{IS_WAITLIST ? 'Early access · waitlist open' : 'Stop WhatsApping yourself'}</span>
+            <h2>{IS_WAITLIST ? <>Bridge is in early access.<br />Save your spot.</> : <>Copy on one device.<br />Paste on the other.</>}</h2>
+            <p>{IS_WAITLIST ? 'Join the waitlist — we’ll email your install links as soon as your spot opens. Free during v1. No account.' : 'Free during v1. No account. Two minutes to set up, then you’ll forget it’s even there.'}</p>
             <div className="hero-ctas" style={{ marginTop: 0 }}>
-              <a className="btn btn-specular" href="/download"><span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows</a>
-              <a className="btn btn-ghost" href="/download"><span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android</a>
+              {IS_WAITLIST ? (
+                <a className="btn btn-specular" href={SIGNUP_PATH}><span className="os-glyph"><IconBell size={14} /></span> Join the waitlist</a>
+              ) : (
+                <>
+                  <a className="btn btn-specular" href={SIGNUP_PATH}><span className="os-glyph"><WindowsGlyph size={14} /></span> Download for Windows</a>
+                  <a className="btn btn-ghost" href={SIGNUP_PATH}><span className="os-glyph"><AndroidGlyph size={14} /></span> Get for Android</a>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -923,21 +944,31 @@ socket.emit('bridge-message', base64([
               <a href="/features">Features</a>
               <a href="/tour">Tour</a>
               <a href="/setup">How it works</a>
-              <a href="/love">Reviews</a>
+              {!IS_WAITLIST && <a href="/love">Reviews</a>}
             </div>
             <div className="foot-col">
               <h4>Trust</h4>
-              <a href="/security">Technical proof</a>
+              <a href="/security">Security</a>
               <a href="/permissions">Permissions</a>
-              <a href="/compare">Comparison</a>
+              {!IS_WAITLIST && <a href="/compare">Comparison</a>}
               <a href="/faq">FAQ</a>
             </div>
             <div className="foot-col">
               <h4>Get</h4>
-              <a href={SITE.windowsDownloadUrl}>Windows app</a>
-              <a href={SITE.androidDownloadUrl}>Android app</a>
-              <a href="/download">All downloads</a>
-              <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
+              {IS_WAITLIST ? (
+                <>
+                  <a href={SIGNUP_PATH}>Join the waitlist</a>
+                  <a href="/setup">How it works</a>
+                  <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
+                </>
+              ) : (
+                <>
+                  <a href={SITE.windowsDownloadUrl}>Windows app</a>
+                  <a href={SITE.androidDownloadUrl}>Android app</a>
+                  <a href={SIGNUP_PATH}>All downloads</a>
+                  <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
+                </>
+              )}
             </div>
           </div>
           <div className="foot-base">
@@ -952,7 +983,7 @@ socket.emit('bridge-message', base64([
 
 /* ---------------- router ---------------- */
 
-const SECTIONS = ['story', 'moments', 'features', 'tour', 'setup', 'love', 'security', 'permissions', 'compare', 'download', 'faq'];
+const SECTIONS = ['story', 'moments', 'features', 'tour', 'setup', 'love', 'security', 'permissions', 'compare', 'faq'];
 
 export default function App() {
   return (
@@ -962,8 +993,10 @@ export default function App() {
         {SECTIONS.map((s) => (
           <Route key={s} path={`/${s}`} element={<Home section={s} />} />
         ))}
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/privacy-policy" element={<Privacy />} />
+        {/* Signup URL per mode (/waitlist vs /download) + aliases so old links never 404. */}
+        <Route path="/download" element={<Home section={SIGNUP_SECTION} />} />
+        <Route path="/waitlist" element={<Home section={SIGNUP_SECTION} />} />
+        <Route path="/join" element={<Home section={SIGNUP_SECTION} />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
