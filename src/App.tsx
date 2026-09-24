@@ -949,8 +949,8 @@ socket.emit('bridge-message', base64([
             </div>
           </div>
           <div className="foot-base">
-            <span>© 2026 Bridge. Not open source — yet.</span>
-            <span><a href="/privacy" style={{ textDecoration: 'none' }}>Privacy Policy</a> · <span className="live">●</span> your Wi-Fi is the cloud</span>
+            <span>© 2026 Bridge.</span>
+            <span><a href="/privacy" style={{ textDecoration: 'none' }}>Privacy Policy</a></span>
           </div>
         </div>
       </footer>
