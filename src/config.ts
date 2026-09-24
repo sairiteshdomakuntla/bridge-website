@@ -23,7 +23,7 @@ export const SITE = {
   playStoreUrl: '/download',
   releasesUrl: '/download',
   supportEmail: 'sairiteshdomakuntla@gmail.com',
-  websiteUrl: 'https://getbridge-awc.vercel.app',
+  websiteUrl: 'https://bridgeconnects.vercel.app',
 } as const;
 
 /** Short, human-friendly fingerprint: ED3A5454…AA6ACA71 */

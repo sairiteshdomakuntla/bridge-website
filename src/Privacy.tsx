@@ -20,7 +20,7 @@ export default function Privacy() {
 
   const handleCopyLink = () => {
     const url = window.location.origin.includes('localhost')
-      ? 'https://getbridge-awc.vercel.app/privacy'
+      ? 'https://bridgeconnects.vercel.app/privacy'
       : `${window.location.origin}/privacy`;
     navigator.clipboard.writeText(url);
     setCopied(true);
@@ -58,7 +58,7 @@ export default function Privacy() {
           <div className="legal-meta-grid">
             <span className="legal-chip">Application: <b>Bridge</b> (<code>dev.sairitesh.bridge</code>)</span>
             <span className="legal-chip">Effective Date: <b>September 24, 2026</b></span>
-            <span className="legal-chip">Website: <a href="https://getbridge-awc.vercel.app" style={{ color: 'inherit', textDecoration: 'none' }}>getbridge-awc.vercel.app</a></span>
+            <span className="legal-chip">Website: <a href="https://bridgeconnects.vercel.app" style={{ color: 'inherit', textDecoration: 'none' }}>bridgeconnects.vercel.app</a></span>
           </div>
 
           <div className="legal-actions">
@@ -399,7 +399,7 @@ export default function Privacy() {
             <li><b>Developer:</b> Sai Ritesh Domakuntla</li>
             <li><b>Email:</b> <a href="mailto:sairiteshdomakuntla@gmail.com">sairiteshdomakuntla@gmail.com</a></li>
             <li><b>Application Package:</b> <code>dev.sairitesh.bridge</code></li>
-            <li><b>Official Website:</b> <a href="https://getbridge-awc.vercel.app">https://getbridge-awc.vercel.app</a></li>
+            <li><b>Official Website:</b> <a href="https://bridgeconnects.vercel.app">https://bridgeconnects.vercel.app</a></li>
           </ul>
         </section>
       </main>
