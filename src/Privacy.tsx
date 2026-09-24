@@ -14,7 +14,7 @@ export default function Privacy() {
     document.title = 'Privacy Policy — Bridge';
     window.scrollTo(0, 0);
     return () => {
-      document.title = 'Bridge — Your Android and Windows, finally in sync';
+      document.title = 'Bridge — Android Continuity';
     };
   }, []);
 
@@ -58,7 +58,7 @@ export default function Privacy() {
           <div className="legal-meta-grid">
             <span className="legal-chip">Application: <b>Bridge</b> (<code>dev.sairitesh.bridge</code>)</span>
             <span className="legal-chip">Effective Date: <b>September 24, 2026</b></span>
-            <span className="legal-chip">Website: <a href="https://bridgeconnects.vercel.app" style={{ color: 'inherit', textDecoration: 'none' }}>bridgeconnects.vercel.app</a></span>
+            <span className="legal-chip">Website: <a className="legal-chip-link" href="https://bridgeconnects.vercel.app">bridgeconnects.vercel.app</a></span>
           </div>
 
           <div className="legal-actions">

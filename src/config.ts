@@ -70,3 +70,13 @@ export const SITE = {
 export function shortHash(full: string): string {
   return `${full.slice(0, 8)}…${full.slice(-8)}`;
 }
+
+/**
+ * Canonical signup path per launch mode. Waitlist mode lives at /waitlist
+ * (not /download — there is nothing to download yet); public mode keeps
+ * the original /download URL. Use this for every CTA href.
+ */
+export const SIGNUP_PATH = IS_WAITLIST ? '/waitlist' : '/download';
+
+/** Section id of the signup block, matching SIGNUP_PATH. */
+export const SIGNUP_SECTION = IS_WAITLIST ? 'waitlist' : 'download';
