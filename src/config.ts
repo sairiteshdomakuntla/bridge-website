@@ -11,12 +11,12 @@ export const SITE = {
 
   windowsInstaller: 'Bridge-Windows-1.0.0-Setup.exe',
   windowsSize: '83.3 MB',
-  windowsSha256: 'ED3A5454886072B35842EDFAB0BA55F31789328E13D49EDC0460B8C6AA6ACA71',
+  windowsSha256: 'CCB8FC852DEA48A079DF73DA0FA3221D64E9D5E452E1457B5CCE853654264BB8',
   windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.0-Setup.exe',
 
   androidApk: 'Bridge-Android-v1.0.0.apk',
   androidSize: '99.7 MB',
-  androidSha256: '4435F02B236054B24DD8226655EA4773543B631A7C3E134B79D764E4EEED3349',
+  androidSha256: 'C25561FA9945BD75A5B004347D60EB26FD0FA9E1FFB6B47195A474FB88DB0CB5',
   androidDownloadUrl: '/downloads/Bridge-Android-v1.0.0.apk',
 
   // TODO: point here once the Play Store listing is live.
