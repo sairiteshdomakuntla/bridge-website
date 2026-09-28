@@ -1,4 +1,4 @@
-import { Check, ChevronDown } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { PERMS } from '../data/site';
 import SectionHead from './SectionHead';
 
@@ -7,31 +7,18 @@ export default function Permissions() {
     <section className="block" id="permissions">
       <div className="wrap">
         <SectionHead
-          eyebrow="Permissions"
-          heading={
-            <>
-              Asked only when needed. <span className="thin">Explained every time.</span>
-            </>
-          }
+          heading={<>Every permission, on the record.</>}
           desc="Bridge needs a few sensitive permissions to do its job. Each one is requested only when its feature needs it, and you can revoke it any time."
         />
         <div className="perm-intro reveal">
-          <span className="trust-chip">
-            <Check size={14} /> asked only when needed
-          </span>
-          <span className="trust-chip">
-            <Check size={14} /> everything revocable
-          </span>
-          <span className="trust-chip">
-            <Check size={14} /> nothing hidden
-          </span>
+          <span><Check size={14} /> asked only when needed</span>
+          <span><Check size={14} /> everything revocable</span>
+          <span><Check size={14} /> nothing hidden</span>
         </div>
         <details className="geek reveal">
           <summary>
             <span>Full permission list</span>
-            <span className="geek-hint">
-              6 entries · 0 hidden <ChevronDown size={12} />
-            </span>
+            <span className="geek-hint">6 entries · 0 hidden</span>
           </summary>
           <div className="geek-body flush">
             <div className="perm-table">

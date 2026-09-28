@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Check, Sparkles } from 'lucide-react';
 import { SITE } from './config';
 import { getWaitlistEntries, isValidEmail, saveWaitlistEntry } from './waitlist';
 
@@ -15,23 +14,21 @@ export default function WaitlistForm() {
 
   if (done || alreadyIn) {
     return (
-      <div className="dl-card featured reveal in">
-        <div className="os">
-          <div className="glyph win" aria-hidden="true">
-            <Check size={22} />
-          </div>
+      <div className="dl-card reveal in">
+        <div className="dl-os">
+          <div className="glyph">✓</div>
           <div>
             <h3>You’re on the list</h3>
             <div className="file">early access · invite by email</div>
           </div>
         </div>
         <p className="wl-intro">
-          Thanks — we’re letting people in gradually so setup stays smooth. We’ll send your invite to{' '}
+          Thanks. We are letting people in gradually so setup stays smooth. We’ll send your invite to{' '}
           <b>{alreadyIn && !done ? 'your inbox' : email || 'your inbox'}</b> as soon as your spot opens. Questions?{' '}
           <a href={`mailto:${SITE.supportEmail}`}>Contact support</a>
         </p>
         <div className="wl-queue">
-          <span className="tick">→</span> No download needed yet — we’ll send your links when it’s your turn.
+          <span className="tick">→</span> No download needed yet. We will send your links when it is your turn.
         </div>
       </div>
     );
@@ -57,11 +54,9 @@ export default function WaitlistForm() {
   };
 
   return (
-    <div className="dl-card featured reveal in">
-      <div className="os">
-        <div className="glyph win" aria-hidden="true">
-          <Sparkles size={20} />
-        </div>
+    <div className="dl-card reveal in">
+      <div className="dl-os">
+        <div className="glyph">→</div>
         <div>
           <h3>Join the waitlist</h3>
           <div className="file">early access · free during v1</div>
@@ -97,7 +92,7 @@ export default function WaitlistForm() {
         </label>
         {error && <p className="wl-error" role="alert">{error}</p>}
         <button className="btn btn-primary btn-block" type="submit" disabled={saving}>
-          {saving ? 'Saving your spot…' : 'Notify me — join waitlist'}
+          {saving ? 'Saving your spot…' : 'Join the waitlist'}
         </button>
         <p className="wl-fine">No spam, no account. One email when your invite is ready.</p>
       </form>

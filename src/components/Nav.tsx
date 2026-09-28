@@ -8,10 +8,10 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
-    { to: '/features', label: 'Features' },
-    { to: '/tour', label: 'Tour' },
+    { to: '/features', label: 'Numbers' },
+    { to: '/tour', label: 'Film' },
     { to: '/setup', label: 'How it works' },
-    ...(!IS_WAITLIST ? [{ to: '/love', label: 'Reviews' }] : []),
+    ...(!IS_WAITLIST ? [{ to: '/love', label: 'Voices' }] : []),
     { to: '/faq', label: 'FAQ' },
     { to: SIGNUP_PATH, label: IS_WAITLIST ? 'Waitlist' : 'Download' },
   ];
@@ -19,7 +19,7 @@ export default function Nav() {
   return (
     <>
       <div className="nav-shell">
-        <nav className="nav">
+        <nav className="nav" aria-label="Primary">
           <Link className="nav-logo" to="/">
             <Logo />
             <span>Bridge</span>
@@ -32,7 +32,7 @@ export default function Nav() {
             ))}
           </div>
           <Link className="nav-cta" to={SIGNUP_PATH}>
-            {IS_WAITLIST ? 'Join waitlist' : 'Get Bridge — free'}
+            {IS_WAITLIST ? 'Join the waitlist' : 'Get Bridge'}
           </Link>
           <button
             className="nav-menu-btn"

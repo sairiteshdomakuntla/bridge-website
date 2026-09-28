@@ -1,16 +1,15 @@
 import type { ReactNode } from 'react';
 
 type Props = {
-  eyebrow: string;
+  eyebrow?: string;
   heading: ReactNode;
   desc?: ReactNode;
-  center?: boolean;
 };
 
-export default function SectionHead({ eyebrow, heading, desc, center }: Props) {
+export default function SectionHead({ eyebrow, heading, desc }: Props) {
   return (
-    <div className={`sec-head${center ? ' center' : ''} reveal`}>
-      <span className="eyebrow">{eyebrow}</span>
+    <div className={`sec-head reveal${eyebrow ? ' has-eyebrow' : ''}`}>
+      {eyebrow && <span className="eyebrow">{eyebrow}</span>}
       <h2>{heading}</h2>
       {desc && <p>{desc}</p>}
     </div>

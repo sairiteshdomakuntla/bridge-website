@@ -1,54 +1,41 @@
-import { Link2, Image, MessageSquare, Smartphone } from 'lucide-react';
-import SectionHead from './SectionHead';
-
-const MOMENTS = [
-  {
-    icon: Link2,
-    title: "Links you can't retype",
-    body: '80-character Meet, Docs or Figma link on WhatsApp, work waiting on the laptop. Copy once, paste in the browser. Zero typos.',
-  },
-  {
-    icon: Image,
-    title: 'Screenshots straight into work',
-    body: 'Whiteboard photo, ID scan, design mock. Copy the image on your phone, paste it into Word, Docs or Photoshop — full quality.',
-  },
-  {
-    icon: MessageSquare,
-    title: 'Texts without breaking flow',
-    body: 'Message lands mid-work. Reply from your real keyboard in seconds, dismiss the noise, never pick up the phone.',
-  },
-  {
-    icon: Smartphone,
-    title: 'Present from anywhere',
-    body: 'Phone becomes mouse, keyboard and clicker. Advance slides from the back of the room, pause movies from the couch.',
-  },
+const TICKER = [
+  'Clipboard both ways',
+  'Files in original quality',
+  'Reply from your keyboard',
+  'Phone as webcam',
+  'Remote and media keys',
+  'Ring on silent',
 ];
+
+function TickerRow({ hidden }: { hidden?: boolean }) {
+  return (
+    <span aria-hidden={hidden || undefined}>
+      {TICKER.map((t) => (
+        <span key={t}>
+          {t} <i>·</i>
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export default function Moments() {
   return (
-    <section className="block" id="moments">
-      <div className="wrap">
-        <SectionHead
-          eyebrow="Made for real life"
-          heading={
-            <>
-              Stop WhatsApping yourself. <span className="thin">Seriously.</span>
-            </>
-          }
-          desc="The things that are genuinely painful without Bridge — not six-digit codes you could retype, but the stuff you can't."
-        />
-        <div className="moments-grid">
-          {MOMENTS.map(({ icon: Icon, title, body }) => (
-            <div className="moment reveal" key={title}>
-              <span className="moment-icon">
-                <Icon size={20} />
-              </span>
-              <b>{title}</b>
-              <p>{body}</p>
-            </div>
-          ))}
+    <>
+      <div className="proof" id="moments">
+        <div className="wrap proof-row reveal">
+          <div><b>No account</b>Pair with a QR scan. Nothing to sign into.</div>
+          <div><b>Stays on your Wi-Fi</b>Encrypted end to end. No cloud relay.</div>
+          <div><b>2-minute setup</b>Install both apps, scan once, done.</div>
+          <div><b>Free during v1</b>Early users keep it free. No catch.</div>
         </div>
       </div>
-    </section>
+      <div className="marquee" aria-label="Everything Bridge does">
+        <div className="marquee-track">
+          <TickerRow />
+          <TickerRow hidden />
+        </div>
+      </div>
+    </>
   );
 }

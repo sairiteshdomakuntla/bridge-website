@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 /** Adds `.in` to every `.reveal` element as it enters the viewport. */
 export function useReveal() {
@@ -47,4 +47,18 @@ export function useSectionScroll(section?: string) {
     }, 60);
     return () => clearTimeout(t);
   }, [section]);
+}
+
+/**
+ * Safari / iOS only honor autoplay when the muted *attribute* is present.
+ * React sets the muted property but omits the attribute, so this ref
+ * callback sets both. Attach to every autoplaying <video>.
+ */
+export function useMutedRef() {
+  return useCallback((el: HTMLVideoElement | null) => {
+    if (el) {
+      el.muted = true;
+      el.defaultMuted = true;
+    }
+  }, []);
 }

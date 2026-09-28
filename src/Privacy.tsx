@@ -11,10 +11,10 @@ export default function Privacy() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    document.title = 'Privacy Policy — Bridge';
+    document.title = 'Privacy Policy · Bridge';
     window.scrollTo(0, 0);
     return () => {
-      document.title = 'Bridge — Android Continuity';
+      document.title = 'Bridge · Android Continuity';
     };
   }, []);
 
@@ -210,7 +210,7 @@ export default function Privacy() {
           <div className="legal-card">
             <h3>3. System Clipboard Data</h3>
             <p><b>Information Accessed:</b> Copied text, URLs, and image data.</p>
-            <p><b>Functionality:</b> Enables seamless copy-and-paste continuity between your phone and your PC.</p>
+            <p><b>Functionality:</b> Enables copy-and-paste continuity between your phone and your PC.</p>
             <p><b>Handling:</b> In compliance with modern operating system restrictions, clipboard data is only read when the user explicitly triggers an action (such as copying within Bridge, tapping the "Sync Now" notification action, or using the home-screen clipboard widget). Content is transferred directly across local Wi-Fi and is never routed through remote servers.</p>
           </div>
 

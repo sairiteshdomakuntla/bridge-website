@@ -17,10 +17,9 @@ export default function FAQ() {
     <section className="block" id="faq">
       <div className="wrap">
         <SectionHead
-          eyebrow="FAQ"
           heading={
             <>
-              Wondering something? <span className="thin">Start here.</span>
+              Questions, answered.
             </>
           }
         />
@@ -51,11 +50,11 @@ export default function FAQ() {
           {IS_WAITLIST ? (
             <>
               More questions? Reach us at{' '}
-              <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a> — we read everything.
+              <a href={`mailto:${SITE.supportEmail}`}>{SITE.supportEmail}</a>. We read everything.
             </>
           ) : (
             <>
-              Technical and want packet-level proof? Expand the Technical details sections above — keys, wire format
+              Technical and want packet-level proof? Expand the Technical details section above. Keys, wire format
               and the full permission ledger are all there.
             </>
           )}

@@ -1,50 +1,38 @@
 import { Link } from 'react-router-dom';
-import { Bell } from 'lucide-react';
 import { IS_WAITLIST, SIGNUP_PATH } from '../config';
-import { Logo, WindowsGlyph, AndroidGlyph } from './brand';
+import { WindowsGlyph, AndroidGlyph } from './brand';
 
 export default function FinalCTA() {
   return (
     <section className="block">
       <div className="wrap">
         <div className="final reveal">
-          <div className="final-logo">
-            <Logo size={52} />
-          </div>
           <span className="eyebrow">
-            {IS_WAITLIST ? 'Early access · waitlist open' : 'Stop WhatsApping yourself'}
+            {IS_WAITLIST ? 'Early access · waitlist open' : 'Free during v1 · no account'}
           </span>
           <h2>
             {IS_WAITLIST ? (
-              <>
-                Bridge is in early access.
-                <br />
-                Save your spot.
-              </>
+              <>Your invite is one email away.</>
             ) : (
-              <>
-                Copy on one device.
-                <br />
-                Paste on the other.
-              </>
+              <>Stop sending files to yourself.</>
             )}
           </h2>
           <p>
             {IS_WAITLIST
-              ? 'Join the waitlist — we’ll email your install links as soon as your spot opens. Free during v1. No account.'
-              : 'Free during v1. No account. Two minutes to set up, then you’ll forget it’s even there.'}
+              ? 'One email when your spot opens. Your install links are inside.'
+              : 'Two minutes to set up. Then you will forget it is even there.'}
           </p>
           <div className="hero-ctas">
             {IS_WAITLIST ? (
-              <Link className="btn btn-on-primary" to={SIGNUP_PATH}>
-                <Bell size={16} /> Join the waitlist
+              <Link className="btn btn-on-dark" to={SIGNUP_PATH}>
+                Join the waitlist
               </Link>
             ) : (
               <>
-                <Link className="btn btn-on-primary" to={SIGNUP_PATH}>
+                <Link className="btn btn-on-dark" to={SIGNUP_PATH}>
                   <WindowsGlyph size={16} /> Download for Windows
                 </Link>
-                <Link className="btn btn-on-primary-ghost" to={SIGNUP_PATH}>
+                <Link className="btn btn-on-dark-ghost" to={SIGNUP_PATH}>
                   <AndroidGlyph size={16} /> Get for Android
                 </Link>
               </>

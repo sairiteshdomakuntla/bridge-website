@@ -22,20 +22,23 @@ export default function Home({ section }: { section?: string }) {
 
   return (
     <>
+      <a className="skip-link" href="#content">Skip to content</a>
       <Nav />
-      <Hero />
-      <Moments />
-      <Story />
-      <Features />
-      <Tour />
-      <Setup />
-      {!IS_WAITLIST && <Reviews />}
-      <Security />
-      <Permissions />
-      {!IS_WAITLIST && <Compare />}
-      <Signup />
-      <Faq />
-      <FinalCTA />
+      <main id="content">
+        <Hero />
+        <Moments />
+        <Story />
+        <Features />
+        <Tour />
+        <Setup />
+        {!IS_WAITLIST && <Reviews />}
+        <Security />
+        <Permissions />
+        {!IS_WAITLIST && <Compare />}
+        <Signup />
+        <Faq />
+        <FinalCTA />
+      </main>
       <Footer />
     </>
   );
