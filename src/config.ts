@@ -21,7 +21,7 @@ function resolveLaunchMode(): LaunchMode {
 export const LAUNCH_MODE: LaunchMode = resolveLaunchMode();
 
 /** Convenience flag for conditional rendering. */
-export const IS_WAITLIST: boolean = LAUNCH_MODE === 'waitlist';
+export const IS_WAITLIST: boolean = LAUNCH_MODE === 'public';
 
 /**
  * Optional waitlist collection endpoint (POST JSON { name, email, platform, createdAt }).
