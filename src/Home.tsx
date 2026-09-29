@@ -31,7 +31,7 @@ export default function Home({ section }: { section?: string }) {
         <Features />
         <Tour />
         <Setup />
-        {!IS_WAITLIST && <Reviews />}
+        {/* {!IS_WAITLIST && <Reviews />} */}
         <Security />
         <Permissions />
         {!IS_WAITLIST && <Compare />}

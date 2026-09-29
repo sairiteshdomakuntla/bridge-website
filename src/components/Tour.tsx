@@ -43,18 +43,18 @@ const ACTS: Act[] = [
     mockKey: 'files',
   },
   {
-    n: '03 / Texts',
-    title: 'Type at full speed.',
-    body: 'WhatsApp, Telegram, SMS. Messages land on Windows the moment they hit your phone.',
+    n: '03 / Camera',
+    title: 'Your best camera is the one in your pocket.',
+    body: 'Bridge Phone Camera appears in Meet, Zoom and Teams like any other webcam. Front or back lens, one tap to switch.',
     steps: [
-      <span key="1"><b>Reply inline</b> from your real keyboard</span>,
-      <span key="2"><b>Dismiss</b> the noise without touching the phone</span>,
-      <span key="3">Switch it off any time. <b>Mirroring stops dead.</b></span>,
+      <span key="1">Shows up as <b>Bridge Phone Camera</b> everywhere</span>,
+      <span key="2">Small text and details <b>stay readable</b></span>,
+      <span key="3"><b>Front or back lens</b>, switch in one tap</span>,
     ],
-    note: 'Notification listener · revocable in Settings',
-    video: '',
-    videoLabel: '',
-    mockKey: 'texts',
+    note: 'WebRTC peer to peer · same LAN · nothing uploaded',
+    video: '/videos/camera.mp4',
+    videoLabel: 'camera · wireless HD',
+    mockKey: 'camera',
   },
   {
     n: '04 / Remote',
@@ -71,18 +71,18 @@ const ACTS: Act[] = [
     mockKey: 'remote',
   },
   {
-    n: '05 / Camera',
-    title: 'Your best camera is the one in your pocket.',
-    body: 'Bridge Phone Camera appears in Meet, Zoom and Teams like any other webcam. Front or back lens, one tap to switch.',
+    n: '05 / Texts',
+    title: 'Type at full speed.',
+    body: 'WhatsApp, Telegram, SMS. Messages land on Windows the moment they hit your phone.',
     steps: [
-      <span key="1">Shows up as <b>Bridge Phone Camera</b> everywhere</span>,
-      <span key="2">Small text and details <b>stay readable</b></span>,
-      <span key="3"><b>Front or back lens</b>, switch in one tap</span>,
+      <span key="1"><b>Reply inline</b> from your real keyboard</span>,
+      <span key="2"><b>Dismiss</b> the noise without touching the phone</span>,
+      <span key="3">Switch it off any time. <b>Mirroring stops dead.</b></span>,
     ],
-    note: 'WebRTC peer to peer · same LAN · nothing uploaded',
-    video: '/videos/camera.mp4',
-    videoLabel: 'camera · wireless HD',
-    mockKey: 'camera',
+    note: 'Notification listener · revocable in Settings',
+    video: '',
+    videoLabel: '',
+    mockKey: 'texts',
   },
 ];
 
@@ -157,74 +157,13 @@ function Mock({ kind }: { kind: NonNullable<Act['mockKey']> }) {
   );
 }
 
-/**
- * Hero film slot. Drop a 16:9 loop at public/videos/hero.mp4 and it plays
- * here automatically. Until then the clipboard capture holds the slot,
- * so the film section never shows an empty frame.
- */
-const HERO_FILM_SRC = '/videos/hero.mp4';
-const HERO_FILM_FALLBACK = '/videos/clipboard.mp4';
-
-function HeroFilm() {
-  const [src, setSrc] = useState(HERO_FILM_SRC);
-  const [missing, setMissing] = useState(false);
-  const muteRef = useMutedRef();
-  const ref = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || missing) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      el.removeAttribute('autoplay');
-      el.pause();
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) el.play().catch(() => {});
-        else el.pause();
-      },
-      { threshold: 0.35 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [missing, src]);
-
-  const handleError = () => {
-    if (src === HERO_FILM_SRC) setSrc(HERO_FILM_FALLBACK);
-    else setMissing(true);
-  };
-
-  if (missing) {
-    return (
-      <div className="film-slot" role="img" aria-label="Placeholder for the hero film">
-        <div className="dots" aria-hidden="true" />
-        <div>
-          <span className="mono">Hero film · 16:9 loop</span>
-          <p>Desk scene: copy on the phone, paste on the laptop. One continuous take.</p>
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div className="film-frame">
-      <video
-        ref={(el) => {
-          muteRef(el);
-          (ref as React.MutableRefObject<HTMLVideoElement | null>).current = el;
-        }}
-        src={src}
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        aria-label="Bridge hero film"
-        onError={handleError}
-      />
-    </div>
-  );
-}
+const JUMP_TABS = [
+  { label: '01 Clipboard', act: 0 },
+  { label: '02 Files', act: 1 },
+  { label: '03 Camera', act: 2 },
+  { label: '04 Remote', act: 3 },
+  { label: '05 Texts', act: 4 },
+];
 
 function ActMedia({ act, on, muteRef, videoRef, index }: { act: Act; on: boolean; muteRef: (el: HTMLVideoElement | null) => void; videoRef: (i: number, el: HTMLVideoElement | null) => void; index: number }) {
   const [failed, setFailed] = useState(false);
@@ -295,14 +234,35 @@ export default function Tour() {
     videoRefs.current[i] = el;
   };
 
+  const jumpToAct = (idx: number) => {
+    setActive(idx);
+    const target = actRefs.current[idx];
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
   return (
     <section className="block" id="tour">
-      <div className="wrap">
+      <div className="wrap tour-head-wrap">
         <SectionHead
           heading={<>Watch it work.</>}
-          desc="Five flows, filmed on real devices. Scroll, and the story plays itself."
+          desc="Five flows, filmed on real devices. Scroll through the acts or select any flow below."
         />
-        <HeroFilm />
+        <div className="acts-nav" role="tablist" aria-label="Feature acts">
+          {JUMP_TABS.map((tab) => (
+            <button
+              key={tab.act}
+              type="button"
+              role="tab"
+              aria-selected={active === tab.act}
+              className={`acts-tab${active === tab.act ? ' on' : ''}`}
+              onClick={() => jumpToAct(tab.act)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="acts">
@@ -332,6 +292,9 @@ export default function Tour() {
           <div className="acts-stage">
             <div className="acts-counter" aria-hidden="true">
               <span className="mono">0{active + 1} / 05</span>
+              <span className="acts-stage-status">
+                <span className="pulse-dot" /> LIVE P2P
+              </span>
               <span className="acts-rail">
                 {ACTS.map((a, i) => (
                   <i key={a.n} className={i <= active ? 'on' : ''} />

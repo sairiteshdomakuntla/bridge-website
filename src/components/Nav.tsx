@@ -8,25 +8,32 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
-    { to: '/features', label: 'Numbers' },
+    { to: '/', label: 'Home' },
     { to: '/tour', label: 'Film' },
     { to: '/setup', label: 'How it works' },
-    ...(!IS_WAITLIST ? [{ to: '/love', label: 'Voices' }] : []),
+    // ...(!IS_WAITLIST ? [{ to: '/love', label: 'Voices' }] : []),
     { to: '/faq', label: 'FAQ' },
     { to: SIGNUP_PATH, label: IS_WAITLIST ? 'Waitlist' : 'Download' },
   ];
+
+  const handleLinkClick = (to: string) => {
+    setMenuOpen(false);
+    if (to === '/' && window.location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
       <div className="nav-shell">
         <nav className="nav" aria-label="Primary">
-          <Link className="nav-logo" to="/">
+          <Link className="nav-logo" to="/" onClick={() => handleLinkClick('/')}>
             <Logo />
             <span>Bridge</span>
           </Link>
           <div className="nav-links">
             {links.map((l) => (
-              <Link key={l.to} to={l.to}>
+              <Link key={l.to} to={l.to} onClick={() => handleLinkClick(l.to)}>
                 {l.label}
               </Link>
             ))}
@@ -47,7 +54,7 @@ export default function Nav() {
       {menuOpen && (
         <div className="mobile-menu">
           {links.map((l) => (
-            <Link key={l.to} to={l.to} onClick={() => setMenuOpen(false)}>
+            <Link key={l.to} to={l.to} onClick={() => handleLinkClick(l.to)}>
               {l.label}
             </Link>
           ))}

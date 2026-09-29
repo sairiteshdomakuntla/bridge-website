@@ -1,8 +1,14 @@
-import { Check } from 'lucide-react';
-import { PERMS } from '../data/site';
+import { useState } from 'react';
+import { Check, ShieldCheck } from 'lucide-react';
+import { PERMS, type Perm } from '../data/site';
 import SectionHead from './SectionHead';
 
 export default function Permissions() {
+  const [filter, setFilter] = useState<'all' | 'android' | 'windows'>('all');
+
+  const filtered =
+    filter === 'all' ? PERMS : PERMS.filter((p) => p.platform === filter);
+
   return (
     <section className="block" id="permissions">
       <div className="wrap">
@@ -10,43 +16,96 @@ export default function Permissions() {
           heading={<>Every permission, on the record.</>}
           desc="Bridge needs a few sensitive permissions to do its job. Each one is requested only when its feature needs it, and you can revoke it any time."
         />
+
         <div className="perm-intro reveal">
-          <span><Check size={14} /> asked only when needed</span>
-          <span><Check size={14} /> everything revocable</span>
-          <span><Check size={14} /> nothing hidden</span>
+          <span>
+            <Check size={14} /> Asked only on-demand
+          </span>
+          <span>
+            <Check size={14} /> 100% revocable in OS settings
+          </span>
+          <span>
+            <Check size={14} /> 0 telemetry · 0 cloud upload
+          </span>
         </div>
+
         <details className="geek reveal">
           <summary>
-            <span>Full permission list</span>
-            <span className="geek-hint">6 entries · 0 hidden</span>
+            <span>Full permission audit</span>
+            <span className="geek-hint">{PERMS.length} entries · 0 hidden</span>
           </summary>
           <div className="geek-body flush">
-            <div className="perm-table">
-              <div className="perm-row head">
-                <div>Permission / capability</div>
-                <div>Why · when · if denied</div>
+            <div className="perm-ledger">
+              <div className="perm-ledger-head">
+                <div className="perm-ledger-title">
+                  <ShieldCheck size={16} />
+                  <span>Permissions Ledger</span>
+                  <span className="perm-ledger-badge">
+                    {filtered.length} of {PERMS.length} entries
+                  </span>
+                </div>
+
+                <div className="perm-filters" role="tablist" aria-label="Filter by OS">
+                  <button
+                    type="button"
+                    className={`perm-filter-btn${filter === 'all' ? ' on' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFilter('all');
+                    }}
+                  >
+                    All ({PERMS.length})
+                  </button>
+                  <button
+                    type="button"
+                    className={`perm-filter-btn${filter === 'android' ? ' on' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFilter('android');
+                    }}
+                  >
+                    Android (5)
+                  </button>
+                  <button
+                    type="button"
+                    className={`perm-filter-btn${filter === 'windows' ? ' on' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFilter('windows');
+                    }}
+                  >
+                    Windows (1)
+                  </button>
+                </div>
               </div>
-              {PERMS.map((p) => (
-                <div className="perm-row" key={p.perm}>
-                  <div className="perm-name">
-                    <code>{p.perm}</code>
-                    <span className={`plat ${p.platform}`}>{p.platform}</span>
-                  </div>
-                  <div className="perm-detail">
-                    <p className="why">{p.why}</p>
-                    <div className="meta">
-                      <div>
-                        <dt>Asked</dt>
-                        <dd>{p.when}</dd>
+
+              <div className="perm-cards">
+                {filtered.map((p: Perm) => (
+                  <div className="perm-card" key={p.perm}>
+                    <div className="perm-card-top">
+                      <div className="perm-card-name">
+                        <code className="perm-code">{p.perm}</code>
+                        <span className={`perm-badge-os ${p.platform}`}>
+                          {p.platform}
+                        </span>
                       </div>
-                      <div>
-                        <dt>If denied</dt>
-                        <dd className="deny">{p.ifDenied}</dd>
+                    </div>
+
+                    <p className="perm-why">{p.why}</p>
+
+                    <div className="perm-meta-grid">
+                      <div className="perm-meta-box">
+                        <span className="perm-meta-label">When asked</span>
+                        <span className="perm-meta-val">{p.when}</span>
+                      </div>
+                      <div className="perm-meta-box deny">
+                        <span className="perm-meta-label">If denied</span>
+                        <span className="perm-meta-val">{p.ifDenied}</span>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </details>

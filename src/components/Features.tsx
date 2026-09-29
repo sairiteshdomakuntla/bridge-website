@@ -35,9 +35,9 @@ export default function Features() {
             <ul>
               <li><b>Clipboard:</b> text and images, both directions, history on both sides, echo-proofed dedupe store. Android 10 and up focus rules mean one Sync Now tap.</li>
               <li><b>Files:</b> 64 KB chunks with SHA-256 checks over a direct socket. Resume-safe and verified.</li>
-              <li><b>Notifications:</b> Android notification listener, reply and dismiss round-trip. Revoke any time.</li>
-              <li><b>Remote:</b> trackpad deltas near 60 Hz, keyboard plus media keys, sensitivity 0.5 to 3.0 (default 1.8).</li>
               <li><b>Camera:</b> WebRTC peer-to-peer video over the same LAN link. No relay server.</li>
+              <li><b>Remote:</b> trackpad deltas near 60 Hz, keyboard plus media keys, sensitivity 0.5 to 3.0 (default 1.8).</li>
+              <li><b>Notifications:</b> Android notification listener, reply and dismiss round-trip. Revoke any time.</li>
               <li><b>Ring:</b> about 15 seconds at max volume, plus live battery over the same encrypted channel.</li>
             </ul>
           </div>
