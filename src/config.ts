@@ -46,18 +46,18 @@ export const WAITLIST_STORAGE_KEY = 'bridge-waitlist';
  *   Get-FileHash <file> -Algorithm SHA256
  */
 export const SITE = {
-  appVersion: '1.0.0',
-  androidVersionCode: '2',
+  appVersion: '1.0.1',
+  androidVersionCode: '3',
 
   windowsInstaller: 'Bridge-Windows-1.0.0-Setup.exe',
   windowsSize: '83.3 MB',
   windowsSha256: 'CCB8FC852DEA48A079DF73DA0FA3221D64E9D5E452E1457B5CCE853654264BB8',
   windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.0-Setup.exe',
 
-  androidApk: 'Bridge-Android-v1.0.0.apk',
-  androidSize: '99.7 MB',
-  androidSha256: 'C25561FA9945BD75A5B004347D60EB26FD0FA9E1FFB6B47195A474FB88DB0CB5',
-  androidDownloadUrl: '/downloads/Bridge-Android-v1.0.0.apk',
+  androidApk: 'Bridge-Android-v1.0.1.apk',
+  androidSize: '64.9 MB',
+  androidSha256: 'D53DEDE7BCB7B8BD399E5AC088F57D88A3A5F20F90D7093391A082E982AFA4A7',
+  androidDownloadUrl: '/downloads/Bridge-Android-v1.0.1.apk',
 
   // TODO: point here once the Play Store listing is live.
   playStoreUrl: '/download',
