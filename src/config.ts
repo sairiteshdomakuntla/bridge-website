@@ -51,7 +51,7 @@ export const SITE = {
 
   windowsInstaller: 'Bridge-Windows-1.0.0-Setup.exe',
   windowsSize: '83.3 MB',
-  windowsSha256: 'CCB8FC852DEA48A079DF73DA0FA3221D64E9D5E452E1457B5CCE853654264BB8',
+  windowsSha256: '279764D3AC13EB899AC9EE249A5192B027E31F9EB867347000F0A64022E53EBB',
   windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.0-Setup.exe',
 
   androidApk: 'Bridge-Android-v1.0.1.apk',
