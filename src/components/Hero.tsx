@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { IS_WAITLIST, SIGNUP_PATH } from '../config';
+import { IS_WAITLIST, SIGNUP_PATH, SITE } from '../config';
 import { Logo, WindowsGlyph, AndroidGlyph } from './brand';
 
 const ROTATING_FEATURES = [
@@ -65,7 +65,7 @@ export default function Hero() {
           <span className="dot" aria-hidden="true" />
           <span className="hero-badge-status">
             <span className="pulse-indicator" aria-hidden="true" />
-            {IS_WAITLIST ? 'Early access' : 'Free during v1'}
+            {IS_WAITLIST ? 'Early access' : 'Free · No account'}
           </span>
         </div>
 
@@ -113,9 +113,14 @@ export default function Hero() {
               <Link className="btn btn-primary" to={SIGNUP_PATH}>
                 <WindowsGlyph size={16} /> Download for Windows
               </Link>
-              <Link className="btn btn-ghost" to={SIGNUP_PATH}>
-                <AndroidGlyph size={16} /> Get for Android
-              </Link>
+              <a
+                className="btn btn-ghost"
+                href={SITE.playStoreUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <AndroidGlyph size={16} /> Get it on Google Play
+              </a>
             </>
           )}
         </div>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { IS_WAITLIST, SIGNUP_PATH } from '../config';
+import { IS_WAITLIST, SIGNUP_PATH, SITE } from '../config';
 import { WindowsGlyph, AndroidGlyph } from './brand';
 
 export default function FinalCTA() {
@@ -8,7 +8,7 @@ export default function FinalCTA() {
       <div className="wrap">
         <div className="final reveal">
           <span className="eyebrow">
-            {IS_WAITLIST ? 'Early access · waitlist open' : 'Free during v1 · no account'}
+            {IS_WAITLIST ? 'Early access · waitlist open' : 'Free · no account · 2-minute setup'}
           </span>
           <h2>
             {IS_WAITLIST ? (
@@ -32,9 +32,14 @@ export default function FinalCTA() {
                 <Link className="btn btn-on-dark" to={SIGNUP_PATH}>
                   <WindowsGlyph size={16} /> Download for Windows
                 </Link>
-                <Link className="btn btn-on-dark-ghost" to={SIGNUP_PATH}>
-                  <AndroidGlyph size={16} /> Get for Android
-                </Link>
+                <a
+                  className="btn btn-on-dark-ghost"
+                  href={SITE.playStoreUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <AndroidGlyph size={16} /> Get it on Google Play
+                </a>
               </>
             )}
           </div>

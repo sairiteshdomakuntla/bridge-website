@@ -980,6 +980,11 @@ video.tour-video { display: block; width: 100%; border-radius: 10px; border: 1px
 .compare-note { margin-top: 18px; font-size: 14px; color: var(--ink-2); max-width: 46em; }
 
 /* ---------- signup ---------- */
+.dl-need-both { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; border: 1px solid var(--line); background: var(--wash); border-radius: 14px; padding: 14px 18px; margin-bottom: 28px; font-size: 14.5px; color: var(--ink-2); }
+.dl-need-both b { color: var(--ink); white-space: nowrap; }
+.dl-need-both i { font-style: normal; font-weight: 700; color: var(--ink); }
+.dl-play-note { margin-top: 12px; font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+.dl-play-note b { color: var(--ink); }
 .signup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; border-top: 1px solid var(--line); padding-top: 40px; align-items: start; }
 .dl-card { min-width: 0; }
 .dl-card h3 { font-family: var(--display); font-size: 22px; letter-spacing: -0.02em; margin-bottom: 4px; }

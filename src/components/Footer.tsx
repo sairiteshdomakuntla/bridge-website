@@ -13,7 +13,7 @@ export default function Footer() {
               <span>Bridge</span>
             </Link>
             <p>Your phone and PC, finally in sync. Private by design.</p>
-            <p className="foot-version">v{SITE.appVersion} · free during v1</p>
+            <p className="foot-version">v{SITE.appVersion} · free · no account</p>
           </div>
           <div className="foot-col">
             <h4>Product</h4>
@@ -40,7 +40,7 @@ export default function Footer() {
             ) : (
               <>
                 <a href={SITE.windowsDownloadUrl}>Windows app</a>
-                <a href={SITE.androidDownloadUrl}>Android app</a>
+                <a href={SITE.playStoreUrl} target="_blank" rel="noreferrer">Android app (Google Play)</a>
                 <Link to={SIGNUP_PATH}>All downloads</Link>
                 <a href={`mailto:${SITE.supportEmail}`}>Contact</a>
               </>

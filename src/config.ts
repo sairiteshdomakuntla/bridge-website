@@ -14,14 +14,14 @@ function resolveLaunchMode(): LaunchMode {
     typeof import.meta !== 'undefined'
       ? (import.meta.env?.VITE_LAUNCH_MODE as string | undefined)
       : undefined;
-  const raw = (fromEnv ?? 'waitlist').toLowerCase();
-  return raw === 'public' ? 'public' : 'waitlist';
+  const raw = (fromEnv ?? 'public').toLowerCase();
+  return raw === 'waitlist' ? 'waitlist' : 'public';
 }
 
 export const LAUNCH_MODE: LaunchMode = resolveLaunchMode();
 
 /** Convenience flag for conditional rendering. */
-export const IS_WAITLIST: boolean = LAUNCH_MODE === 'public';
+export const IS_WAITLIST: boolean = LAUNCH_MODE === 'waitlist';
 
 /**
  * Optional waitlist collection endpoint (POST JSON { name, email, platform, createdAt }).
@@ -49,18 +49,20 @@ export const SITE = {
   appVersion: '1.0.1',
   androidVersionCode: '3',
 
-  windowsInstaller: 'Bridge-Windows-1.0.0-Setup.exe',
+  windowsInstaller: 'Bridge-Windows-1.0.1-Setup.exe',
   windowsSize: '83.3 MB',
-  windowsSha256: '279764D3AC13EB899AC9EE249A5192B027E31F9EB867347000F0A64022E53EBB',
-  windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.0-Setup.exe',
+  windowsSha256: '3A95917A16127DAF602234E5DE01F2AAA80CB14186A4A16D9E3A939DD765994E',
+  windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.1-Setup.exe',
 
   androidApk: 'Bridge-Android-v1.0.1.apk',
   androidSize: '64.9 MB',
   androidSha256: 'D53DEDE7BCB7B8BD399E5AC088F57D88A3A5F20F90D7093391A082E982AFA4A7',
-  androidDownloadUrl: '/downloads/Bridge-Android-v1.0.1.apk',
+  // Android is distributed via Google Play (closed testing for now).
+  // Direct APK in public/downloads/ is kept as a fallback mirror only.
+  androidDownloadUrl: 'https://play.google.com/apps/testing/dev.sairitesh.bridge',
+  androidApkUrl: '/downloads/Bridge-Android-v1.0.1.apk',
 
-  // TODO: point here once the Play Store listing is live.
-  playStoreUrl: '/download',
+  playStoreUrl: 'https://play.google.com/apps/testing/dev.sairitesh.bridge',
   releasesUrl: '/download',
   supportEmail: 'sairiteshdomakuntla@gmail.com',
   websiteUrl: 'https://bridgeconnects.vercel.app',

@@ -7,6 +7,10 @@ import { WindowsGlyph, AndroidGlyph } from './brand';
 function DownloadGrid() {
   return (
     <>
+      <div className="dl-need-both reveal">
+        <b>Bridge needs both halves.</b>
+        <span>Install the Windows app on your PC <i>and</i> the Android app on your phone, join the same Wi-Fi, then scan once. Either one alone does nothing.</span>
+      </div>
       <div className="signup-grid">
         <div className="dl-card reveal">
           <div className="dl-os">
@@ -30,7 +34,7 @@ function DownloadGrid() {
             <div className="glyph"><AndroidGlyph size={22} /></div>
             <div>
               <h3>For Android</h3>
-              <div className="file">Android 8.0 and up · v{SITE.appVersion}</div>
+              <div className="file">Android 8.0 and up · v{SITE.appVersion} · Google Play</div>
             </div>
           </div>
           <ul>
@@ -38,17 +42,18 @@ function DownloadGrid() {
             <li>Share any photo or file to your PC</li>
             <li>Remote, camera and ring-my-phone included</li>
           </ul>
-          <a className="btn btn-ghost btn-block" href={SITE.androidDownloadUrl} download={SITE.androidApk}>
-            <Download size={16} /> Download for Android · {SITE.androidSize}
+          <a className="btn btn-ghost btn-block" href={SITE.playStoreUrl} target="_blank" rel="noreferrer">
+            <Download size={16} /> Get it on Google Play · Free
           </a>
+          <p className="dl-play-note">Testing link: tap <b>Become a tester</b>, then <b>Install</b>. Takes under a minute.</p>
         </div>
       </div>
       <div className="dl-note reveal">
         <b>First time? Read this once.</b>
         <ol>
-          <li><b>Windows asks “Run anyway?”</b> Normal for new apps. Click “More info”, then “Run anyway”.</li>
+          <li><b>On your phone:</b> open the Play link, join testing, install Bridge.</li>
+          <li><b>On your PC:</b> install Bridge for Windows. If Windows asks “Run anyway?” — normal for new apps. Click “More info”, then “Run anyway”.</li>
           <li><b>Firewall asks about private networks.</b> Click Allow, or your phone cannot find the PC.</li>
-          <li><b>Android asks to allow installs.</b> Allow once for your browser, then install.</li>
           <li><b>Connect.</b> Open Bridge on the PC, scan the code with your phone. Done.</li>
         </ol>
       </div>
@@ -101,7 +106,7 @@ export default function Signup() {
             IS_WAITLIST ? (
               'Early access is rolling in small batches. Leave your email and your install links arrive with your invite.'
             ) : (
-              'Two installs, two minutes, zero accounts. Free during v1.'
+              'You need both apps: Bridge for Windows on your PC and Bridge on your phone. Two minutes, same Wi-Fi, one scan.'
             )
           }
         />

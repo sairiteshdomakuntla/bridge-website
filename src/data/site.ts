@@ -81,7 +81,15 @@ export const FAQS = [
     a: 'A Windows 10/11 PC and an Android phone on the same Wi-Fi, plus about two minutes. Install both apps, scan the code, done.',
   },
   {
+    q: 'Where do files I receive on my PC get saved?',
+    a: 'In a Bridge folder inside your Downloads — including a relocated Downloads folder (for example on another drive). The notification shows the exact location, and clicking it opens the file in Explorer.',
+  },
+  {
+    q: 'Meet only shows my built-in webcam, not Bridge Phone Camera. How do I fix it?',
+    a: 'Three steps, in order: 1) In the Bridge app on your PC, click Phone camera once and approve the Windows administrator prompt — that installs the webcam driver. 2) Fully quit and reopen Chrome or Edge (it only scans for cameras at startup). 3) In Meet, open Settings → Video and pick "Bridge Phone Camera". Tip: start the phone camera from the Bridge app before joining the call.',
+  },
+  {
     q: 'Is Bridge safe to install? My PC warned me.',
-    a: 'Yes. That warning just means the app is new. Windows flags any new, unsigned installer, and Android flags any app installed outside the Play Store. As long as you downloaded from this site, on your own Wi-Fi, you are good. You can remove permissions or uninstall any time.',
+    a: 'Yes. Android installs from Google Play, so it is scanned and verified. On Windows, that warning just means the app is new — Windows flags any new installer. As long as you downloaded from this site, on your own Wi-Fi, you are good. You can remove permissions or uninstall any time.',
   },
 ];
