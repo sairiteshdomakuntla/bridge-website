@@ -46,21 +46,21 @@ export const WAITLIST_STORAGE_KEY = 'bridge-waitlist';
  *   Get-FileHash <file> -Algorithm SHA256
  */
 export const SITE = {
-  appVersion: '1.0.1',
-  androidVersionCode: '3',
+  appVersion: '1.0.3',
+  androidVersionCode: '5',
 
-  windowsInstaller: 'Bridge-Windows-1.0.1-Setup.exe',
+  windowsInstaller: 'Bridge-Windows-1.0.2-Setup.exe',
   windowsSize: '83.3 MB',
-  windowsSha256: '3A95917A16127DAF602234E5DE01F2AAA80CB14186A4A16D9E3A939DD765994E',
-  windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.1-Setup.exe',
+  windowsSha256: 'A1CA06D012ECC7D043A1C6EE2D76D11EA47426CAA2F3F9BDC3ADF1FA453D97F8',
+  windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.2-Setup.exe',
 
-  androidApk: 'Bridge-Android-v1.0.1.apk',
-  androidSize: '64.9 MB',
-  androidSha256: 'D53DEDE7BCB7B8BD399E5AC088F57D88A3A5F20F90D7093391A082E982AFA4A7',
+  androidApk: 'Bridge-Android-v1.0.3.apk',
+  androidSize: '99.8 MB',
+  androidSha256: 'A8514E52B97759D357DB77BA48D1107AEF32773FA49786658966765C06677221',
   // Android is distributed via Google Play (closed testing for now).
   // Direct APK in public/downloads/ is kept as a fallback mirror only.
   androidDownloadUrl: 'https://play.google.com/apps/testing/dev.sairitesh.bridge',
-  androidApkUrl: '/downloads/Bridge-Android-v1.0.1.apk',
+  androidApkUrl: '/downloads/Bridge-Android-v1.0.3.apk',
 
   playStoreUrl: 'https://play.google.com/apps/testing/dev.sairitesh.bridge',
   releasesUrl: '/download',
