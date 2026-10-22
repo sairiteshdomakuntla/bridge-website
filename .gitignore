@@ -32,3 +32,7 @@ lerna-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Large binary downloads (hosted on GitHub Releases / Google Play)
+*.zip
+*.apk

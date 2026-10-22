@@ -45,13 +45,12 @@ function DownloadGrid() {
           <a className="btn btn-ghost btn-block" href={SITE.playStoreUrl} target="_blank" rel="noreferrer">
             <Download size={16} /> Get it on Google Play · Free
           </a>
-          <p className="dl-play-note">Testing link: tap <b>Become a tester</b>, then <b>Install</b>. Takes under a minute.</p>
         </div>
       </div>
       <div className="dl-note reveal">
         <b>First time? Read this once.</b>
         <ol>
-          <li><b>On your phone:</b> open the Play link, join testing, install Bridge.</li>
+          <li><b>On your phone:</b> install Bridge from Google Play.</li>
           <li><b>On your PC:</b> install Bridge for Windows. If Windows asks “Run anyway?” — normal for new apps. Click “More info”, then “Run anyway”.</li>
           <li><b>Firewall asks about private networks.</b> Click Allow, or your phone cannot find the PC.</li>
           <li><b>Connect.</b> Open Bridge on the PC, scan the code with your phone. Done.</li>

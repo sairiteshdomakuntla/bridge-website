@@ -52,17 +52,16 @@ export const SITE = {
   windowsInstaller: 'Bridge-Windows-1.0.3-Setup.exe',
   windowsSize: '83.3 MB',
   windowsSha256: 'F8C808D0DC2B1FEC66859958DC380E50AFB60FCC3CB9EEF0B289889BAB1089E5',
-  windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.3-Setup.exe',
+  windowsDownloadUrl: 'https://github.com/sairiteshdomakuntla/bridge-releases/releases/download/v1.0.3/Bridge-Windows-1.0.3-Setup.exe',
 
   androidApk: 'Bridge-Android-v1.0.3.apk',
-  androidSize: '99.8 MB',
-  androidSha256: 'A8514E52B97759D357DB77BA48D1107AEF32773FA49786658966765C06677221',
-  // Android is distributed via Google Play (closed testing for now).
-  // Direct APK in public/downloads/ is kept as a fallback mirror only.
-  androidDownloadUrl: 'https://play.google.com/apps/testing/dev.sairitesh.bridge',
+  androidSize: '100.2 MB',
+  androidSha256: 'D947453C46FDA2B5CE0964AC35E364C0937B9F61AC91055D9472C0D87390EAFA',
+  // Android is distributed via Google Play.
+  androidDownloadUrl: 'https://play.google.com/store/apps/details?id=dev.sairitesh.bridge',
   androidApkUrl: '/downloads/Bridge-Android-v1.0.3.apk',
 
-  playStoreUrl: 'https://play.google.com/apps/testing/dev.sairitesh.bridge',
+  playStoreUrl: 'https://play.google.com/store/apps/details?id=dev.sairitesh.bridge',
   releasesUrl: '/download',
   supportEmail: 'sairiteshdomakuntla@gmail.com',
   websiteUrl: 'https://bridgeconnects.vercel.app',
