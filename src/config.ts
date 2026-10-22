@@ -49,10 +49,10 @@ export const SITE = {
   appVersion: '1.0.3',
   androidVersionCode: '5',
 
-  windowsInstaller: 'Bridge-Windows-1.0.2-Setup.exe',
+  windowsInstaller: 'Bridge-Windows-1.0.3-Setup.exe',
   windowsSize: '83.3 MB',
-  windowsSha256: 'A1CA06D012ECC7D043A1C6EE2D76D11EA47426CAA2F3F9BDC3ADF1FA453D97F8',
-  windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.2-Setup.exe',
+  windowsSha256: 'F8C808D0DC2B1FEC66859958DC380E50AFB60FCC3CB9EEF0B289889BAB1089E5',
+  windowsDownloadUrl: '/downloads/Bridge-Windows-1.0.3-Setup.exe',
 
   androidApk: 'Bridge-Android-v1.0.3.apk',
   androidSize: '99.8 MB',
