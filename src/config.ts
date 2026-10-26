@@ -39,27 +39,23 @@ export const WAITLIST_ENDPOINT: string =
 export const WAITLIST_STORAGE_KEY = 'bridge-waitlist';
 
 /**
- * Download wiring. Binaries are served straight from this site
- * (public/downloads/) so users get one-click installs.
- * SHA-256 hashes below are of the exact files being served —
- * regenerate them whenever the binaries are replaced:
+ * Download wiring. Windows installs ship from the GitHub bridge-releases
+ * release assets; Android ships from Google Play.
+ * Keep windowsSha256/windowsSize matching the exact Setup.exe you upload —
+ * regenerate whenever the binary changes:
  *   Get-FileHash <file> -Algorithm SHA256
  */
 export const SITE = {
-  appVersion: '1.0.3',
-  androidVersionCode: '5',
+  appVersion: '1.1.0',
+  androidVersionCode: '6',
 
-  windowsInstaller: 'Bridge-Windows-1.0.3-Setup.exe',
+  windowsInstaller: 'Bridge-Windows-1.1.0-Setup.exe',
   windowsSize: '83.3 MB',
-  windowsSha256: 'F8C808D0DC2B1FEC66859958DC380E50AFB60FCC3CB9EEF0B289889BAB1089E5',
-  windowsDownloadUrl: 'https://github.com/sairiteshdomakuntla/bridge-releases/releases/download/v1.0.3/Bridge-Windows-1.0.3-Setup.exe',
+  windowsSha256: '53FBCCFE016EC4C00A2543200B4A50D8C863DD649FFFB488C7BF453892A912B5',
+  windowsDownloadUrl: 'https://github.com/sairiteshdomakuntla/bridge-releases/releases/download/v1.0.0/Bridge-Windows-1.1.0-Setup.exe',
 
-  androidApk: 'Bridge-Android-v1.0.3.apk',
-  androidSize: '100.2 MB',
-  androidSha256: 'D947453C46FDA2B5CE0964AC35E364C0937B9F61AC91055D9472C0D87390EAFA',
-  // Android is distributed via Google Play.
+  // Android is distributed via Google Play — no APK download.
   androidDownloadUrl: 'https://play.google.com/store/apps/details?id=dev.sairitesh.bridge',
-  androidApkUrl: '/downloads/Bridge-Android-v1.0.3.apk',
 
   playStoreUrl: 'https://play.google.com/store/apps/details?id=dev.sairitesh.bridge',
   releasesUrl: '/download',

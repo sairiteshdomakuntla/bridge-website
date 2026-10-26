@@ -542,6 +542,18 @@ section.block { padding: 120px 0 0; scroll-margin-top: 70px; }
   margin-bottom: 14px;
   font-variant-numeric: tabular-nums;
 }
+.beta-flag {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  color: var(--ink-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 1px 7px;
+  margin-left: 8px;
+  vertical-align: 2px;
+}
 .act h3 {
   font-family: var(--display);
   font-size: clamp(26px, 3vw, 34px);

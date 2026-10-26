@@ -11,6 +11,7 @@ type Act = {
   video: string;
   videoLabel: string;
   mockKey?: 'texts' | 'remote' | 'camera' | 'clipboard' | 'files';
+  beta?: boolean;
 };
 
 const ACTS: Act[] = [
@@ -55,6 +56,7 @@ const ACTS: Act[] = [
     video: '/videos/camera.mp4',
     videoLabel: 'camera · wireless HD',
     mockKey: 'camera',
+    beta: true,
   },
   {
     n: '04 / Remote',
@@ -276,7 +278,10 @@ export default function Tour() {
               data-act={i}
               className={`act${active === i ? ' live' : ''}`}
             >
-              <span className="chapter-index">{act.n}</span>
+              <span className="chapter-index">
+                {act.n}
+                {act.beta && <span className="beta-flag" title="Newer feature — may still be rough on some devices">BETA</span>}
+              </span>
               <h3>{act.title}</h3>
               <p>{act.body}</p>
               <ul className="chapter-steps">

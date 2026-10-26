@@ -89,6 +89,10 @@ export const FAQS = [
     a: 'Three steps, in order: 1) In the Bridge app on your PC, click Phone camera once and approve the Windows administrator prompt — that installs the webcam driver. 2) Fully quit and reopen Chrome or Edge (it only scans for cameras at startup). 3) In Meet, open Settings → Video and pick "Bridge Phone Camera". Tip: start the phone camera from the Bridge app before joining the call.',
   },
   {
+    q: 'The webcam is marked BETA in the app. Is that a big deal?',
+    a: 'Not a big deal, just honesty. The webcam is the newest feature, so the app labels it BETA while we tune it on more phone models and routers. Copy, files, notifications and remote are stable. If the camera is flaky on your setup, email your phone model to sairiteshdomakuntla@gmail.com and your report goes straight to the fix list.',
+  },
+  {
     q: 'Is Bridge safe to install? My PC warned me.',
     a: 'Yes. Android installs from Google Play, so it is scanned and verified. On Windows, that warning just means the app is new — Windows flags any new installer. As long as you downloaded from this site, on your own Wi-Fi, you are good. You can remove permissions or uninstall any time.',
   },
